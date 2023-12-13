@@ -1,0 +1,16 @@
+bash single_qubit_shadow_0.qsub
+bash single_qubit_shadow_1.qsub
+bash single_qubit_shadow_2.qsub
+bash single_qubit_shadow_3.qsub
+bash single_qubit_shadow_4.qsub
+bash single_qubit_shadow_5.qsub
+bash single_qubit_shadow_6.qsub
+bash single_qubit_shadow_7.qsub
+bash single_qubit_shadow_8.qsub
+bash single_qubit_shadow_9.qsub
+bash single_qubit_shadow_10.qsub
+bash single_qubit_shadow_11.qsub
+bash single_qubit_shadow_12.qsub
+bash single_qubit_shadow_13.qsub
+bash single_qubit_shadow_14.qsub
+bash single_qubit_shadow_15.qsub

@@ -1,0 +1,2 @@
+/home/sxd190113/Ultimate-QM-MM/build/single_qubit_shadow/./shadow_tomography_qiskit_code.py:141: RuntimeWarning: invalid value encountered in arccos
+  theta_x_exact = np.arccos(zss/np.cos(theta_y_exact))

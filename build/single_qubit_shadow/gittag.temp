@@ -1,0 +1,131 @@
+commit 5183478c0ae82868143337e802fd459a96e41dc0
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Wed Dec 13 11:14:52 2023 -0600
+
+    shadow tomography
+    
+    code runs shadow tomography for the given system and save the shadows and the exact density matrices in a npy file for analysis
+
+commit 14499eec8cf3ae8a23164ce21e5c932749d18066
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sat Dec 9 18:53:23 2023 -0600
+
+    Add files via upload
+
+commit 63abe549cbc4089901f4e7bc4f4220595ee6688c
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Dec 7 22:32:09 2023 -0600
+
+    Created using Colaboratory
+
+commit 64bd42292179135102d394e0d8a84b49a1307db8
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Dec 7 21:22:48 2023 -0600
+
+    Created using Colaboratory
+
+commit 38a31fb299169c747c8d985d5425caf9e684d60c
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Dec 7 15:48:29 2023 -0600
+
+    Created using Colaboratory
+
+commit 8a42014acee8f9956e8153a816bb75759b540b88
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Dec 7 14:28:45 2023 -0600
+
+    Created using Colaboratory
+
+commit d45c10af379c861adba97e441fc100e4c62830fc
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Wed Dec 6 10:52:20 2023 -0600
+
+    Created using Colaboratory
+
+commit 029faf4343bf6c5455f52a4751d3454232f13438
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Wed Dec 6 09:03:12 2023 -0600
+
+    working code with plots
+
+commit 00ba8c0a77e1beebc675a2eb1b5cb8735a1b8c75
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Dec 5 17:21:17 2023 -0600
+
+    Created using Colaboratory
+
+commit 065af7fea421c82993da5f745b57451dde2d3fcb
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Dec 5 16:30:08 2023 -0600
+
+    Created using Colaboratory
+
+commit 3aed6dce53a556d4a228bebf82af382a47ec20c7
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Dec 5 13:25:51 2023 -0600
+
+    code to use in google colab
+
+commit 1d8bfa1dae33933f7040a738976648855fa4b5ca
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Mon Dec 4 16:30:50 2023 -0600
+
+    variation of parameters is working
+    
+    variation of parameters is done and compared the results with qiskit
+
+commit b0c93cd561eeac3b0996c0ecc0c2c0fb2a569604
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Dec 3 11:39:00 2023 -0600
+
+    linear and quadratic function of rho
+    
+    calculates linear and quadratic function of density matrix using shadow tomography
+
+commit 77e1567ddf6fe9057b968ab98579b2097c13cdd8
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Nov 28 16:46:03 2023 -0600
+
+    backup
+
+commit 60ee77a1d7583d1ae913e5fb077e57edcce23ac2
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Nov 28 12:36:25 2023 -0600
+
+    shadow tomography code backup
+
+commit 2ea269400fbbe1002e667c49671bae91b49d5f18
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Nov 21 19:13:06 2023 -0600
+
+    shadow tomography first code
+
+commit 748eece70eadd0ec34b38c5bc1e6bb4b0323d046
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Mon Nov 20 21:02:46 2023 -0600
+
+    shadow tomography for one qubit
+
+commit 5288e2b98019c23079c15dffe154acddb235f5a7
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Nov 9 11:55:09 2023 -0600
+
+    mathematica notebook for trace minimization
+
+commit 3f4650da28755def1757336d4da1301c485e1528
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Oct 26 22:50:42 2023 -0500
+
+    mathematica notebook with calculations
+
+commit 29c70f1526d2c2650cc16ad0b24ced6023db26f5
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Oct 26 22:44:09 2023 -0500
+
+    code for angles to find rho_ss
+
+commit 02861b909e2fa8641be2033cd32d86eb2823052d
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Oct 26 22:43:36 2023 -0500
+
+    Initial commit
