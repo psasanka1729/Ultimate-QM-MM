@@ -6,9 +6,10 @@
 # In[1]:
 
 
-import os
+#import os
+import sys
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import qiskit
 from qiskit import*
 
@@ -195,11 +196,47 @@ K = 10
 N_qubits = 2
 n_Shadows = N*K
 number_of_angle_divisons = 50
-angles_lst = np.linspace(0.0,2*np.pi,number_of_angle_divisons)
+angles_lst = np.linspace(0,2*np.pi,number_of_angle_divisons)
 repetitions = int(sys.argv[1])
 
+cost_function_one_rep = []
+
 for angle_index in range(len(angles_lst)):
+
+    quadratic_function_i_i_lst = []
+    quadratic_function_y_i_lst = [] 
+    quadratic_function_z_i_lst = []
+    quadratic_function_x_x_lst = []
+    quadratic_function_z_z_lst = [] 
+    quadratic_function_y_z_lst = []
+
     st_instance = shadow_tomography_clifford(N,K,N_qubits,test_quantum_circuit(angles_lst[angle_index],
                                                         theta_y_exact,theta_z_exact,theta_ry_exact))
     np.save("exact_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[0])    
     np.save("shadow_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[1])
+
+    shadows_lst = st_instance[1]
+
+    quadratic_function_i_i_lst.append(quadratic_function_prediction(N,K,I2,I2,shadows_lst))
+    quadratic_function_y_i_lst.append(quadratic_function_prediction(N,K,sigma_y,I2,shadows_lst))
+    quadratic_function_z_i_lst.append(quadratic_function_prediction(N,K,sigma_z,I2,shadows_lst))
+    quadratic_function_x_x_lst.append(quadratic_function_prediction(N,K,sigma_x,sigma_x,shadows_lst))
+    quadratic_function_z_z_lst.append(quadratic_function_prediction(N,K,sigma_z,sigma_z,shadows_lst))
+    quadratic_function_y_z_lst.append(quadratic_function_prediction(N,K,sigma_y,sigma_z,shadows_lst))
+
+    quadratic_function_i_i_lst = np.array(quadratic_function_i_i_lst)
+    quadratic_function_y_i_lst = np.array(quadratic_function_y_i_lst) 
+    quadratic_function_z_i_lst = np.array(quadratic_function_z_i_lst)
+    quadratic_function_x_x_lst = np.array(quadratic_function_x_x_lst)
+    quadratic_function_z_z_lst = np.array(quadratic_function_z_z_lst)
+    quadratic_function_y_z_lst = np.array(quadratic_function_y_z_lst) 
+
+    cost_function_one_rep.append(((b**2/2)*(-quadratic_function_x_x_lst+quadratic_function_i_i_lst)
+	    + (1j*b*gamma_1/4)*(4*1j*quadratic_function_y_i_lst-2*1j*quadratic_function_y_z_lst)
+	    -2*gamma_2*b*(quadratic_function_y_z_lst)
+	    +(gamma_1**2/16)*(10*quadratic_function_i_i_lst+6*quadratic_function_z_z_lst-16*quadratic_function_z_i_lst)
+	    +(gamma_1*gamma_2/2)*(-2*quadratic_function_z_z_lst+2*quadratic_function_i_i_lst)
+	    +(2*gamma_2**2)*(quadratic_function_i_i_lst-quadratic_function_z_z_lst))[0])
+
+np.save("cost_function_matrix_"+str(angle_index)+".npy",cost_function_one_rep)
+
