@@ -4,9 +4,9 @@ import subprocess
 import numpy
 import os
 
-partition_info=['CMT-Kepler',16] # = [partition,ncores]
+partition_info=['normal',16] # = [partition,ncores]
 # partition_info=['debug',16] # = [partition,ncores]
-time_str='2-00:00:00'
+time_str='4-00:00:00'
 project_name=os.getcwd().split('/')[-3]
 myemail=os.environ["MYEMAIL"]
 
@@ -41,7 +41,7 @@ template_contents=open(template_file,'r').read()
 
 vnum=0
 
-for L in xrange(16):
+for L in xrange(64):
 	qsub_file=template_file.replace('.template','_'+str(vnum)+'.qsub')
 	fout=open(qsub_file,'w')
 
