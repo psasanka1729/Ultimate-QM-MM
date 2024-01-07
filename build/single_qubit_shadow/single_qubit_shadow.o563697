@@ -1,0 +1,325 @@
+Starting job single_qubit_shadow
+WARNING (01/06/24 18:35:05): LAUNCHER_WORKDIR variable not set. Using current directory.
+Launcher: Setup complete.
+
+------------- SUMMARY ---------------
+   Number of hosts:    4
+   Working directory:  /home/sxd190113/Ultimate-QM-MM/build/single_qubit_shadow
+   Processes per host: 16
+   Total processes:    64
+   Total jobs:         64
+   Scheduling method:  interleaved
+
+-------------------------------------
+Launcher: Starting parallel tasks...
+using /tmp/launcher.563697.hostlist.38QAvKte to get hosts
+starting job on compute-7-2-33
+starting job on compute-7-2-37
+starting job on compute-7-3-20
+starting job on compute-7-3-22
+Lmod has detected the following error: The following module(s) are unknown:
+"git"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "git"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"git"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "git"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"git"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "git"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Lmod has detected the following error: The following module(s) are unknown:
+"git"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore-cache load "git"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Launcher: Task 12 running job 13 on compute-7-2-33 (bash single_qubit_shadow_12.qsub)
+Launcher: Task 9 running job 10 on compute-7-2-33 (bash single_qubit_shadow_9.qsub)
+Launcher: Task 8 running job 9 on compute-7-2-33 (bash single_qubit_shadow_8.qsub)
+Launcher: Task 10 running job 11 on compute-7-2-33 (bash single_qubit_shadow_10.qsub)
+Launcher: Task 5 running job 6 on compute-7-2-33 (bash single_qubit_shadow_5.qsub)
+Launcher: Task 15 running job 16 on compute-7-2-33 (bash single_qubit_shadow_15.qsub)
+Launcher: Task 2 running job 3 on compute-7-2-33 (bash single_qubit_shadow_2.qsub)
+Launcher: Task 0 running job 1 on compute-7-2-33 (bash single_qubit_shadow_0.qsub)
+Launcher: Task 6 running job 7 on compute-7-2-33 (bash single_qubit_shadow_6.qsub)
+Launcher: Task 1 running job 2 on compute-7-2-33 (bash single_qubit_shadow_1.qsub)
+Launcher: Task 11 running job 12 on compute-7-2-33 (bash single_qubit_shadow_11.qsub)
+Launcher: Task 3 running job 4 on compute-7-2-33 (bash single_qubit_shadow_3.qsub)
+Launcher: Task 4 running job 5 on compute-7-2-33 (bash single_qubit_shadow_4.qsub)
+Launcher: Task 14 running job 15 on compute-7-2-33 (bash single_qubit_shadow_14.qsub)
+Launcher: Task 7 running job 8 on compute-7-2-33 (bash single_qubit_shadow_7.qsub)
+Launcher: Task 13 running job 14 on compute-7-2-33 (bash single_qubit_shadow_13.qsub)
+Launcher: Task 34 running job 35 on compute-7-3-20 (bash single_qubit_shadow_34.qsub)
+Launcher: Task 45 running job 46 on compute-7-3-20 (bash single_qubit_shadow_45.qsub)
+Launcher: Task 41 running job 42 on compute-7-3-20 (bash single_qubit_shadow_41.qsub)
+Launcher: Task 32 running job 33 on compute-7-3-20 (bash single_qubit_shadow_32.qsub)
+Launcher: Task 36 running job 37 on compute-7-3-20 (bash single_qubit_shadow_36.qsub)
+Launcher: Task 33 running job 34 on compute-7-3-20 (bash single_qubit_shadow_33.qsub)
+Launcher: Task 40 running job 41 on compute-7-3-20 (bash single_qubit_shadow_40.qsub)
+Launcher: Task 38 running job 39 on compute-7-3-20 (bash single_qubit_shadow_38.qsub)
+Launcher: Task 43 running job 44 on compute-7-3-20 (bash single_qubit_shadow_43.qsub)
+Launcher: Task 42 running job 43 on compute-7-3-20 (bash single_qubit_shadow_42.qsub)
+Launcher: Task 35 running job 36 on compute-7-3-20 (bash single_qubit_shadow_35.qsub)
+Launcher: Task 37 running job 38 on compute-7-3-20 (bash single_qubit_shadow_37.qsub)
+Launcher: Task 39 running job 40 on compute-7-3-20 (bash single_qubit_shadow_39.qsub)
+Launcher: Task 44 running job 45 on compute-7-3-20 (bash single_qubit_shadow_44.qsub)
+Launcher: Task 46 running job 47 on compute-7-3-20 (bash single_qubit_shadow_46.qsub)
+Launcher: Task 47 running job 48 on compute-7-3-20 (bash single_qubit_shadow_47.qsub)
+Launcher: Task 49 running job 50 on compute-7-3-22 (bash single_qubit_shadow_49.qsub)
+Launcher: Task 52 running job 53 on compute-7-3-22 (bash single_qubit_shadow_52.qsub)
+Launcher: Task 61 running job 62 on compute-7-3-22 (bash single_qubit_shadow_61.qsub)
+Launcher: Task 53 running job 54 on compute-7-3-22 (bash single_qubit_shadow_53.qsub)
+Launcher: Task 54 running job 55 on compute-7-3-22 (bash single_qubit_shadow_54.qsub)
+Launcher: Task 56 running job 57 on compute-7-3-22 (bash single_qubit_shadow_56.qsub)
+Launcher: Task 59 running job 60 on compute-7-3-22 (bash single_qubit_shadow_59.qsub)
+Launcher: Task 58 running job 59 on compute-7-3-22 (bash single_qubit_shadow_58.qsub)
+Launcher: Task 57 running job 58 on compute-7-3-22 (bash single_qubit_shadow_57.qsub)
+Launcher: Task 60 running job 61 on compute-7-3-22 (bash single_qubit_shadow_60.qsub)
+Launcher: Task 50 running job 51 on compute-7-3-22 (bash single_qubit_shadow_50.qsub)
+Launcher: Task 48 running job 49 on compute-7-3-22 (bash single_qubit_shadow_48.qsub)
+Launcher: Task 62 running job 63 on compute-7-3-22 (bash single_qubit_shadow_62.qsub)
+Launcher: Task 55 running job 56 on compute-7-3-22 (bash single_qubit_shadow_55.qsub)
+Launcher: Task 51 running job 52 on compute-7-3-22 (bash single_qubit_shadow_51.qsub)
+Launcher: Task 63 running job 64 on compute-7-3-22 (bash single_qubit_shadow_63.qsub)
+Launcher: Task 18 running job 19 on compute-7-2-37 (bash single_qubit_shadow_18.qsub)
+Launcher: Task 23 running job 24 on compute-7-2-37 (bash single_qubit_shadow_23.qsub)
+Launcher: Task 21 running job 22 on compute-7-2-37 (bash single_qubit_shadow_21.qsub)
+Launcher: Task 25 running job 26 on compute-7-2-37 (bash single_qubit_shadow_25.qsub)
+Launcher: Task 22 running job 23 on compute-7-2-37 (bash single_qubit_shadow_22.qsub)
+Launcher: Task 24 running job 25 on compute-7-2-37 (bash single_qubit_shadow_24.qsub)
+Launcher: Task 29 running job 30 on compute-7-2-37 (bash single_qubit_shadow_29.qsub)
+Launcher: Task 28 running job 29 on compute-7-2-37 (bash single_qubit_shadow_28.qsub)
+Launcher: Task 31 running job 32 on compute-7-2-37 (bash single_qubit_shadow_31.qsub)
+Launcher: Task 20 running job 21 on compute-7-2-37 (bash single_qubit_shadow_20.qsub)
+Launcher: Task 17 running job 18 on compute-7-2-37 (bash single_qubit_shadow_17.qsub)
+Launcher: Task 30 running job 31 on compute-7-2-37 (bash single_qubit_shadow_30.qsub)
+Launcher: Task 19 running job 20 on compute-7-2-37 (bash single_qubit_shadow_19.qsub)
+Launcher: Task 16 running job 17 on compute-7-2-37 (bash single_qubit_shadow_16.qsub)
+Launcher: Task 26 running job 27 on compute-7-2-37 (bash single_qubit_shadow_26.qsub)
+Launcher: Task 27 running job 28 on compute-7-2-37 (bash single_qubit_shadow_27.qsub)
+Removing files
+Launcher: Job 6 completed in 4 seconds.
+Removing files
+Removing files
+Removing files
+Launcher: Task 5 done. Exiting.
+Launcher: Job 10 completed in 4 seconds.
+Launcher: Job 55 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Task 9 done. Exiting.
+Launcher: Job 5 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Task 4 done. Exiting.
+Removing files
+Removing files
+Removing files
+Launcher: Task 54 done. Exiting.
+Removing files
+Launcher: Job 4 completed in 4 seconds.
+Removing files
+Removing files
+Removing files
+Removing files
+Launcher: Task 3 done. Exiting.
+Removing files
+Removing files
+Launcher: Job 3 completed in 4 seconds.
+Launcher: Job 43 completed in 4 seconds.
+Launcher: Job 44 completed in 4 seconds.
+Launcher: Job 47 completed in 4 seconds.
+Launcher: Job 48 completed in 4 seconds.
+Launcher: Job 45 completed in 4 seconds.
+Launcher: Job 34 completed in 4 seconds.
+Launcher: Task 43 done. Exiting.
+Launcher: Task 2 done. Exiting.
+Removing files
+Launcher: Task 42 done. Exiting.
+Launcher: Task 46 done. Exiting.
+Removing files
+Removing files
+Launcher: Task 47 done. Exiting.
+Launcher: Task 44 done. Exiting.
+Launcher: Task 33 done. Exiting.
+Removing files
+Launcher: Job 15 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Job 37 completed in 4 seconds.
+Launcher: Job 35 completed in 4 seconds.
+Removing files
+Launcher: Task 14 done. Exiting.
+Launcher: Job 40 completed in 4 seconds.
+Launcher: Task 36 done. Exiting.
+Removing files
+Removing files
+Launcher: Task 34 done. Exiting.
+Removing files
+Removing files
+Launcher: Job 64 completed in 4 seconds.
+Launcher: Job 50 completed in 4 seconds.
+Launcher: Job 49 completed in 4 seconds.
+Launcher: Job 54 completed in 4 seconds.
+Launcher: Job 36 completed in 4 seconds.
+Launcher: Task 39 done. Exiting.
+Launcher: Task 49 done. Exiting.
+Launcher: Task 63 done. Exiting.
+Launcher: Task 35 done. Exiting.
+Removing files
+Removing files
+Removing files
+Launcher: Task 53 done. Exiting.
+Launcher: Task 48 done. Exiting.
+Removing files
+Launcher: Job 16 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Job 46 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Job 1 completed in 4 seconds.
+Launcher: Task 15 done. Exiting.
+Removing files
+Launcher: Task 45 done. Exiting.
+Launcher: Job 60 completed in 4 seconds.
+Removing files
+Launcher: Job 53 completed in 4 seconds.
+Removing files
+Launcher: Job 56 completed in 4 seconds.
+Launcher: Task 0 done. Exiting.
+Launcher: Task 52 done. Exiting.
+Removing files
+Launcher: Task 59 done. Exiting.
+Launcher: Job 57 completed in 4 seconds.
+Launcher: Job 52 completed in 4 seconds.
+Launcher: Job 13 completed in 4 seconds.
+Launcher: Job 11 completed in 4 seconds.
+Launcher: Job 51 completed in 4 seconds.
+Launcher: Job 7 completed in 4 seconds.
+Launcher: Task 55 done. Exiting.
+Launcher: Job 38 completed in 4 seconds.
+Launcher: Job 33 completed in 4 seconds.
+Launcher: Task 56 done. Exiting.
+Launcher: Task 51 done. Exiting.
+Launcher: Task 12 done. Exiting.
+Launcher: Job 12 completed in 4 seconds.
+Launcher: Task 10 done. Exiting.
+Launcher: Job 9 completed in 4 seconds.
+Launcher: Job 8 completed in 4 seconds.
+Launcher: Task 6 done. Exiting.
+Launcher: Task 50 done. Exiting.
+Launcher: Task 37 done. Exiting.
+Launcher: Job 62 completed in 4 seconds.
+Launcher: Task 32 done. Exiting.
+Launcher: Job 39 completed in 4 seconds.
+Launcher: Task 11 done. Exiting.
+Launcher: Task 8 done. Exiting.
+Launcher: Task 7 done. Exiting.
+Launcher: Job 63 completed in 4 seconds.
+Removing files
+Launcher: Task 38 done. Exiting.
+Launcher: Task 61 done. Exiting.
+Removing files
+Launcher: Task 62 done. Exiting.
+Removing files
+Launcher: Job 41 completed in 4 seconds.
+Launcher: Job 42 completed in 4 seconds.
+Launcher: Task 40 done. Exiting.
+Launcher: Task 41 done. Exiting.
+Launcher: Job 61 completed in 4 seconds.
+Removing files
+Removing files
+Removing files
+Launcher: Task 60 done. Exiting.
+Launcher: Job 14 completed in 4 seconds.
+Launcher: Job 59 completed in 4 seconds.
+Launcher: Job 2 completed in 4 seconds.
+Removing files
+Launcher: Task 13 done. Exiting.
+Launcher: Task 58 done. Exiting.
+Launcher: Task 1 done. Exiting.
+Launcher: Job 58 completed in 4 seconds.
+Launcher: Task 57 done. Exiting.
+Removing files
+Removing files
+Launcher: Job 30 completed in 4 seconds.
+Removing files
+Launcher: Job 17 completed in 4 seconds.
+Launcher: Task 16 done. Exiting.
+Removing files
+Launcher: Job 24 completed in 4 seconds.
+Launcher: Task 23 done. Exiting.
+Removing files
+Launcher: Task 29 done. Exiting.
+Removing files
+Launcher: Job 19 completed in 4 seconds.
+Removing files
+Launcher: Task 18 done. Exiting.
+Removing files
+Launcher: Job 25 completed in 4 seconds.
+Launcher: Job 23 completed in 4 seconds.
+Removing files
+Launcher: Task 22 done. Exiting.
+Launcher: Task 24 done. Exiting.
+Removing files
+Launcher: Job 18 completed in 4 seconds.
+Removing files
+Launcher: Job 32 completed in 4 seconds.
+Launcher: Task 17 done. Exiting.
+Launcher: Job 26 completed in 4 seconds.
+Removing files
+Removing files
+Launcher: Task 31 done. Exiting.
+Launcher: Task 25 done. Exiting.
+Removing files
+Launcher: Job 22 completed in 4 seconds.
+Launcher: Job 27 completed in 4 seconds.
+Removing files
+Launcher: Task 21 done. Exiting.
+Launcher: Job 20 completed in 4 seconds.
+Launcher: Job 28 completed in 4 seconds.
+Launcher: Task 26 done. Exiting.
+Launcher: Task 19 done. Exiting.
+Launcher: Task 27 done. Exiting.
+Launcher: Job 29 completed in 4 seconds.
+Launcher: Job 31 completed in 4 seconds.
+Launcher: Task 28 done. Exiting.
+Launcher: Task 30 done. Exiting.
+Removing files
+Launcher: Job 21 completed in 4 seconds.
+Launcher: Task 20 done. Exiting.
+Launcher: Done. Job exited without errors
+Job single_qubit_shadow complete
