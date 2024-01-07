@@ -1,3 +1,27 @@
+commit 82422e7a78b66143c3093e48b863e3b9ee7d5128
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 09:18:12 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 464ac0bb72b5406feed987a13b51cfc19bbc1dad
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 00:33:40 2024 -0600
+
+    Commit before run single_qubit_2d
+
+commit ff366f986ec5f0e6414104a8d6609430c427f458
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 00:20:55 2024 -0600
+
+    Update single_qubit_lindblad_equation.py
+
+commit 53c6f910c8caff8db4603c921dad2931a75ae3bc
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 00:19:04 2024 -0600
+
+    calculates cost function
+
 commit 34ae399c1735d2741b13245b67583f2e1d5b4f7f
 Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
 Date:   Sat Jan 6 23:58:35 2024 -0600
