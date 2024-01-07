@@ -191,8 +191,8 @@ def quadratic_function_prediction(N,K,operator_m,operator_n,list_of_shadows):
 # In[ ]:
 
 
-N = 25
-K = 25
+N = 50
+K = 10
 N_qubits = 2
 n_Shadows = N*K
 number_of_angle_divisons = 50
@@ -212,8 +212,8 @@ for angle_index in range(len(angles_lst)):
 
     st_instance = shadow_tomography_clifford(N,K,N_qubits,test_quantum_circuit(angles_lst[angle_index],
                                                         theta_y_exact,theta_z_exact,theta_ry_exact))
-    np.save("exact_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[0])    
-    np.save("shadow_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[1])
+    #np.save("exact_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[0])    
+    #np.save("shadow_density_matrix_"+str(N*K)+"_"+str(repetitions)+"_"+str(angle_index)+".npy",st_instance[1])
 
     shadows_lst = st_instance[1]
 
