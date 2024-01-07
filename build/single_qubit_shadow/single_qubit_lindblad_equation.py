@@ -238,5 +238,5 @@ for angle_index in range(len(angles_lst)):
 	    +(gamma_1*gamma_2/2)*(-2*quadratic_function_z_z_lst+2*quadratic_function_i_i_lst)
 	    +(2*gamma_2**2)*(quadratic_function_i_i_lst-quadratic_function_z_z_lst))[0])
 
-np.save("cost_function_matrix_"+str(angle_index)+".npy",cost_function_one_rep)
+np.save("cost_function_matrix.npy",cost_function_one_rep)
 
