@@ -191,11 +191,11 @@ def quadratic_function_prediction(N,K,operator_m,operator_n,list_of_shadows):
 # In[ ]:
 
 
-N = 50
-K = 10
+N = 25
+K = 20
 N_qubits = 2
 n_Shadows = N*K
-number_of_angle_divisons = 50
+number_of_angle_divisons = 100
 angles_lst = np.linspace(0,2*np.pi,number_of_angle_divisons)
 repetitions = int(sys.argv[1])
 
