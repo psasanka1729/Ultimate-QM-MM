@@ -191,7 +191,7 @@ def quadratic_function_prediction(N,K,operator_m,operator_n,list_of_shadows):
 # In[ ]:
 
 
-N = 70
+N = 80
 K = 10
 N_qubits = 2
 n_Shadows = N*K
