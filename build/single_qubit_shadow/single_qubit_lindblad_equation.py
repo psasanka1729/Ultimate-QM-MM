@@ -191,8 +191,8 @@ def quadratic_function_prediction(N,K,operator_m,operator_n,list_of_shadows):
 # In[ ]:
 
 
-N = 25
-K = 20
+N = 30
+K = 10
 N_qubits = 2
 n_Shadows = N*K
 number_of_angle_divisons = 100

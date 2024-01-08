@@ -1,3 +1,59 @@
+commit f51eeca04504be02a0ce6a990ab676540f195ea2
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:50:07 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 28d70113d5006cd8fd22ae16a3e60504ae07e55d
+Merge: 978b58c cf957c8
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:48:33 2024 -0600
+
+    deleted unnecessary files
+    Merge https://github.com/psasanka1729/Ultimate-QM-MM into main
+
+commit cf957c8db74075e7c55ceea6d9b88ed19c120405
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:47:17 2024 -0600
+
+    analyze data from cluster
+
+commit aa772504280faf53360fbd752aadcff2702d09ba
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:44:24 2024 -0600
+
+    complete shadow tomography code
+
+commit a5b0e63e606214bab4b5d990358fda55e960bcdf
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:43:27 2024 -0600
+
+    Delete shadow_tomography_qiskit.ipynb
+
+commit 1a413bf2d1cd26a2069388e47c4d419b61adfb18
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:42:55 2024 -0600
+
+    Delete shadow_tomography_single_qubit.ipynb
+
+commit 0e80d4d2e746faefb80fa57e4e4adfacd8a5d77e
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:58 2024 -0600
+
+    Delete solve_for_angles.ipynb
+
+commit 82d2412e6e038d65e3efcb84e9197545ca9f2b9e
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:36 2024 -0600
+
+    Delete shadow_tomography_qiskit_code.py
+
+commit d42dd7cd62144904114d8edbac81d3f06b4db861
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:13 2024 -0600
+
+    Delete shadow_tomography_qiskit_code.ipynb
+
 commit 978b58c5b56307b8a7613f533615139733a2249a
 Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
 Date:   Sun Jan 7 22:20:03 2024 -0600
