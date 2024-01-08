@@ -196,7 +196,7 @@ K = 10
 N_qubits = 2
 n_Shadows = N*K
 number_of_angle_divisons = 100
-angles_lst = np.linspace(0,2*np.pi,number_of_angle_divisons)
+angles_lst = np.linspace(-np.pi,np.pi,number_of_angle_divisons)
 repetitions = int(sys.argv[1])
 
 cost_function_one_rep = []
