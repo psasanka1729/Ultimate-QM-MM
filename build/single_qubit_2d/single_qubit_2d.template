@@ -9,7 +9,7 @@ LOCAL_DIR=$HOME/$PROJECT_NAME/build
 
 mkdir -p $SCRATCH_DIR
 
-EXEC=single_qubit_lindblad_equation.py
+EXEC=trotterization_H2_molecule.py #single_qubit_lindblad_equation.py
 HELPER=""
 
 cd $LOCAL_DIR/$RUN_NAME
