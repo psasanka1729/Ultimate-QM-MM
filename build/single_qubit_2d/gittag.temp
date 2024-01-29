@@ -1,3 +1,137 @@
+commit 5b87c74c6ab086918d973679a89f533c781254c9
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Sun Jan 28 22:21:43 2024 -0600
+
+    Commit before run single_qubit_2d
+
+commit bb3785bfc3d7bdd33f440d2a53402b216cac5c8e
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sat Jan 27 13:34:58 2024 -0600
+
+    Add files via upload
+
+commit ac1409a17ec76afa1ee361719e4f122bc192421e
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sat Jan 27 13:34:28 2024 -0600
+
+    cluster code backup
+
+commit 8b2b7133b524d7c513e6d4bafe33feb5da8e8ce4
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 13:48:40 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 2ebb0f82b74ca635a4112f418b7305da87aaeda0
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 13:47:56 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 3bafa1fbd533e5217065d1956361797398b2507c
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 12:26:40 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 7db3180ad5ded199e264a14ee74a8630b5dc2afb
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 12:19:51 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 4749a6c2c60f0757b7b79bf10bb9b056782937f2
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 11:46:47 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 5883956001cefde210cedbc5be25360c8fd02bae
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 11:20:27 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 53773a47a8620a7d7ccec0c7f04ff1b54d3545cc
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 10:08:31 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 9fea97cbec0399ccb288cc1ad958838c1fb13b72
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Mon Jan 8 10:05:52 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit f51eeca04504be02a0ce6a990ab676540f195ea2
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:50:07 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 28d70113d5006cd8fd22ae16a3e60504ae07e55d
+Merge: 978b58c cf957c8
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:48:33 2024 -0600
+
+    deleted unnecessary files
+    Merge https://github.com/psasanka1729/Ultimate-QM-MM into main
+
+commit cf957c8db74075e7c55ceea6d9b88ed19c120405
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:47:17 2024 -0600
+
+    analyze data from cluster
+
+commit aa772504280faf53360fbd752aadcff2702d09ba
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:44:24 2024 -0600
+
+    complete shadow tomography code
+
+commit a5b0e63e606214bab4b5d990358fda55e960bcdf
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:43:27 2024 -0600
+
+    Delete shadow_tomography_qiskit.ipynb
+
+commit 1a413bf2d1cd26a2069388e47c4d419b61adfb18
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:42:55 2024 -0600
+
+    Delete shadow_tomography_single_qubit.ipynb
+
+commit 0e80d4d2e746faefb80fa57e4e4adfacd8a5d77e
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:58 2024 -0600
+
+    Delete solve_for_angles.ipynb
+
+commit 82d2412e6e038d65e3efcb84e9197545ca9f2b9e
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:36 2024 -0600
+
+    Delete shadow_tomography_qiskit_code.py
+
+commit d42dd7cd62144904114d8edbac81d3f06b4db861
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Sun Jan 7 22:41:13 2024 -0600
+
+    Delete shadow_tomography_qiskit_code.ipynb
+
+commit 978b58c5b56307b8a7613f533615139733a2249a
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:20:03 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 3b8b46c63a0b5c56d2c92086eafb252a9e49cf87
+Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
+Date:   Sun Jan 7 22:18:48 2024 -0600
+
+    Commit before run single_qubit_shadow
+
 commit 84fbe4fabeb97db6a479fea669020bc72a7f38ef
 Author: Sasanka Dowarah <sxd190113@ganymede.utdallas.edu>
 Date:   Sun Jan 7 14:47:08 2024 -0600
