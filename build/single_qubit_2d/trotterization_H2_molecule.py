@@ -450,7 +450,7 @@ def counts_to_statevector(counts):
     # Return the sum of all states
     return sum(statevector)
 
-time_step_for_trotterization = 0.1
+time_step_for_trotterization = 0.05
 time_lst = np.linspace(time_step_for_trotterization,100,20)
 counts_lst = []
 density_matrices_lst = []
