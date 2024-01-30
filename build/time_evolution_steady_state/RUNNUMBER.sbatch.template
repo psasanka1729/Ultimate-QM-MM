@@ -1,34 +1,34 @@
 #!/bin/bash
 # Job name:
-#SBATCH --job-name=single_qubit_2d
+#SBATCH --job-name=RUNNUMBER
 #
 # Partition:
-#SBATCH --partition=cmt
+#SBATCH --partition=*partition*
 #
 # Processors:
-#SBATCH --ntasks=16
-#SBATCH --nodes=1
+#SBATCH --ntasks=*nnn*
+#SBATCH --nodes=*NNN*
 #
 # Wall clock limit:
-#SBATCH --time=7-00:00:00
+#SBATCH --time=*ttt*
 #
 # Email at end:
-#SBATCH --mail-user=sxd190113@utdallas.edu
+#SBATCH --mail-user=*myemail*
 #SBATCH --mail-type=END
 #
 # Specify output files:
-#SBATCH -o single_qubit_2d.o%j
+#SBATCH -o RUNNUMBER.o%j
 #------------------------------------------------------
 
-echo "Starting job single_qubit_2d"
+echo "Starting job RUNNUMBER"
 
 module load launcher
 
 export LAUNCHER_PLUGIN_DIR=$LAUNCHER_DIR/plugins
 export LAUNCHER_RMI=SLURM
-export LAUNCHER_JOB_FILE=single_qubit_2d.task
+export LAUNCHER_JOB_FILE=RUNNUMBER.task
 export LAUNCHER_SCHED=interleaved
 
 $LAUNCHER_DIR/paramrun
 
-echo "Job single_qubit_2d complete"
+echo "Job RUNNUMBER complete"
