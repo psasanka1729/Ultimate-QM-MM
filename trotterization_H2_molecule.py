@@ -1,15 +1,39 @@
-# %%
+import sys
 import numpy as np
 from qiskit import*
 import qiskit
 from qiskit import transpile,QuantumCircuit
+from qiskit_aer import AerSimulator
+from qiskit import Aer
+from qiskit.quantum_info import partial_trace
+# Import from Qiskit Aer noise module
+from qiskit_aer.noise import (NoiseModel, QuantumError, ReadoutError,
+    pauli_error, depolarizing_error, thermal_relaxation_error)
+from qiskit.quantum_info import DensityMatrix
 from scipy.sparse import csr_matrix, kron
 
+def partial_trace_4_4(matrix):
+        return np.matrix([[matrix[0,0]+matrix[1,1], matrix[0,2]+matrix[1,3]],
+                          [matrix[0,2]+matrix[3,1], matrix[2,2]+matrix[3,3]]])
 
-# %% [markdown]
-# ### Hamiltonian of $H_{2}$ with Jordan Wigner transformation
+I2 = np.array([[1,0],[0,1]])
+sigma_x =np.array([[0,1],[1,0]])
+sigma_y = np.array([[0,-1j],[1j,0]])
+sigma_z = np.array([[1,0],[0,-1]])
 
-# %%
+PI_0 = np.matrix([[1,0],[0,0]])
+PI_1 = np.matrix([[0,0],[0,1]])                          
+
+def controlled_ry_gate_matrix(angle_theta):
+
+        def ry_matrix(angle):
+                return np.matrix([[np.cos(angle/2),-np.sin(angle/2)],
+                                  [np.sin(angle/2),np.cos(angle/2)]])
+        return kron(PI_0,I2) + kron(PI_1,ry_matrix(angle_theta))
+
+def controlled_not_gate_matrix():
+        return kron(I2,PI_0) + kron(sigma_x,PI_1)
+
 # H2 molecule after Jordan Wigner transformation
 L = 4
 H_pauli_lst = ['IIII','IIIZ', 'IIZI', 'IIZZ', 'IZII',
@@ -23,10 +47,14 @@ H_pauli_coeff_lst = [-0.81054798+0.j,  0.17218393+0.j, -0.22575349+0.j,  0.12091
 def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coefficients):
     
     # Pauli matrices dictionary
-    pauli_matrices_dict = {"I": np.array([[1,0],[0,1]]),
-                  "X": np.array([[0,1],[1,0]]),
-                  "Y": np.array([[0,-1j],[1j,0]]),
-                  "Z": np.array([[1,0],[0,-1]])}
+    pauli_matrices_dict = {"I": np.array([[1,0],
+                                          [0,1]]),
+                  "X": np.array([[0,1],
+                                 [1,0]]),
+                  "Y": np.array([[0,-1j],
+                                 [1j,0]]),
+                  "Z": np.array([[1,0],
+                                 [0,-1]])}
     
     sparse_pauli_matrices_dict = {key: csr_matrix(value) for key, value in pauli_matrices_dict.items()}      
 
@@ -41,6 +69,7 @@ def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coeff
         for p_string in range(1,L):
            mat = kron(mat,sparse_pauli_matrices_dict[pauli_string[p_string]])
         return mat
+    
     for i in range(len(sparse_Pauli_matrices_lst)):
       
       sparse_hamiltonian += Pauli_matrices_coefficients[i] * pauli_string_to_matrix(sparse_Pauli_matrices_lst[i])
@@ -49,24 +78,27 @@ def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coeff
 
 full_hamiltonian = sparse_Pauli_to_dense_matrix(H_pauli_lst,H_pauli_coeff_lst);
 
-gamma_in = 0.4
-gamma_out = 0.4
+gamma_in = 0.06
+gamma_out = 0.06
 
 # %% [markdown]
 # ### $n=1$ and $n=2$ states of the Hamiltonian
 
 # %%
-# n = 1 basis states 0001,0010,0100,1000
+"""# n = 1 basis states 0001,0010,0100,1000
 def ket_from_binary_string(binary_string):
         bin_dict = {"0":np.matrix([1,0]), "1":np.matrix([0,1])}
         b_0 = bin_dict[binary_string[-1]]
         for b in range(len(binary_string)-2,-1,-1):
                 b_0 = kron(bin_dict[binary_string[b]],b_0)
         return b_0
+
 n_1_sector_basis_states = [ket_from_binary_string("0001"),ket_from_binary_string("0010"),ket_from_binary_string("0100"),
                            ket_from_binary_string("1000")]
+
 n_1_sector_size = 4
 H_n_1_sector = np.zeros((n_1_sector_size,n_1_sector_size),dtype=np.complex128)
+
 for m in range(len(n_1_sector_basis_states)):
         for n in range(len(n_1_sector_basis_states)):
                 ket_m = n_1_sector_basis_states[m]
@@ -78,24 +110,18 @@ for m in range(len(n_1_sector_basis_states)):
 n_2_sector_basis_states = [ket_from_binary_string("0011"),ket_from_binary_string("0101"),ket_from_binary_string("0110"),
                            ket_from_binary_string("1001"),ket_from_binary_string("1010"),
                            ket_from_binary_string("1100")]
+
 n_2_sector_size = 6
 H_n_2_sector = np.zeros((n_2_sector_size,n_2_sector_size),dtype=np.complex128)
+
 for m in range(len(n_2_sector_basis_states)):
         for n in range(len(n_2_sector_basis_states)):
                 ket_m = n_2_sector_basis_states[m]
                 ket_n = n_2_sector_basis_states[n]
-                H_n_2_sector[m,n] = (ket_m *full_hamiltonian* ket_n.T).A[0,0]
+                H_n_2_sector[m,n] = (ket_m *full_hamiltonian* ket_n.T).A[0,0]""";
 
 # %%
-#n_2_eigvals, n_2_eigstates = np.linalg.eigh(H_n_2_sector)
-
-# %%
-#n_1_eigvals, n_1_eigstates = np.linalg.eigh(H_n_1_sector)
-
-# %% [markdown]
-# ### One time step circuit for trotterization
-
-# %%
+#L = 4
 def one_time_step_circuit(dt,barrier_status):
 
     def ZZ_gate_circuit(qubit_2, qubit_1, coefficient, delta_t): # count qubits from right as in Qiskit
@@ -107,14 +133,14 @@ def one_time_step_circuit(dt,barrier_status):
     
     # Existing quantum registers
     qr = QuantumRegister(L,"q")
-    anc = QuantumRegister(1,"ancilla")
+    anc = QuantumRegister(1,r"\rm{ancilla}")
 
 
     # Create a new quantum circuit with the classical register
     qc_h2 = QuantumCircuit(anc,qr)    
     #qc_h2 = QuantumCircuit(L+1)
 
-    """# one Z gate 
+    # one Z gate 
     # 1,2,4,6
     qc_h2.rz(2*H_pauli_coeff_lst[1].real*dt,0)
     qc_h2.rz(2*H_pauli_coeff_lst[2].real*dt,1)
@@ -258,13 +284,14 @@ def one_time_step_circuit(dt,barrier_status):
     qc_h2.h(3)   
     qc_h2.sdg(3)
     qc_h2.h(0)
-    qc_h2.h(1)""";
+    qc_h2.h(1)
 
     #qc_h2.barrier()
 
     # ancilla qubit
     # L_out
     theta_out = 2*np.arcsin(np.sqrt(dt*gamma_out))
+    qc_h2.initialize([1,0],anc[0])
     qc_h2.cry(theta_out,qr[0],anc)
     qc_h2.cx(anc,qr[0])
     qc_h2.initialize([1,0],anc)    
@@ -282,14 +309,11 @@ def one_time_step_circuit(dt,barrier_status):
     return qc_h2
 
 
-# %% [markdown]
-# ### Complete trotter circuit for time evolution
-
-# %%
 def trotter_circuit(time_step,final_time,initial_state):
     number_of_iterations = int(final_time/time_step)
     print("Number of Floquet cycles = ", number_of_iterations)
-    transpiled_one_step_circuit = transpile(one_time_step_circuit(time_step,False), basis_gates = ["rz","cx","h",], optimization_level=2)
+    transpiled_one_step_circuit = one_time_step_circuit(time_step,False)
+    #transpiled_one_step_circuit = transpile(one_time_step_circuit(time_step,False), basis_gates = ["rz","cx","h",], optimization_level=2)
 
     # Existing quantum registers
     qr = QuantumRegister(L,"q")
@@ -317,64 +341,99 @@ def trotter_circuit(time_step,final_time,initial_state):
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
 
-    qc.measure(qr[3], cr[3])   
+    """qc.measure(qr[3], cr[3])   
     qc.measure(qr[2], cr[2])
     qc.measure(qr[1], cr[1])
-    qc.measure(qr[0], cr[0])
+    qc.measure(qr[0], cr[0])""";
 
-    print("Circuit depth = ",qc.depth())
-    #qc.measure_all()
+    #print("Circuit depth = ",qc.depth())
     return qc
 
+T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
+T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
 
-# %%
-from qiskit import Aer
-from qiskit.quantum_info import partial_trace
+noise_index = int(sys.argv[1])
 
-# %%
-time_lst = np.linspace(1,200,100)
+T1_noise = T1_noise_lst[noise_index]
+T2_noise = T2_noise_lst[noise_index]
+
+T1_standard_deviation = T1_noise/3
+T2_standard_deviation = T2_noise/3
+
+# T1 and T2 values for qubits 0-3
+T1s = np.random.normal(T1_noise, T1_standard_deviation, 4)
+T2s = np.random.normal(T2_noise, T2_standard_deviation, 4)
+# Truncate random T2s <= T1s
+T2s = np.array([min(T2s[j], 2 * T1s[j]) for j in range(4)])
+
+# Instruction times (in nanoseconds)
+time_u1 = 0   # virtual gate
+time_u2 = 50  # (single X90 pulse)
+time_u3 = 100 # (two X90 pulses)
+time_cx = 300
+time_reset = 1000  # 1 microsecond
+time_measure = 1000 # 1 microsecond
+
+
+# QuantumError objects
+errors_reset = [thermal_relaxation_error(t1, t2, time_reset)
+                for t1, t2 in zip(T1s, T2s)]
+errors_measure = [thermal_relaxation_error(t1, t2, time_measure)
+                  for t1, t2 in zip(T1s, T2s)]
+errors_u1  = [thermal_relaxation_error(t1, t2, time_u1)
+              for t1, t2 in zip(T1s, T2s)]
+errors_u2  = [thermal_relaxation_error(t1, t2, time_u2)
+              for t1, t2 in zip(T1s, T2s)]
+errors_u3  = [thermal_relaxation_error(t1, t2, time_u3)
+              for t1, t2 in zip(T1s, T2s)]
+errors_cx = [[thermal_relaxation_error(t1a, t2a, time_cx).expand(
+             thermal_relaxation_error(t1b, t2b, time_cx))
+              for t1a, t2a in zip(T1s, T2s)]
+               for t1b, t2b in zip(T1s, T2s)]
+
+# Add errors to noise model
+noise_thermal = NoiseModel()
+for j in range(4):
+    noise_thermal.add_quantum_error(errors_reset[j], "reset", [j])
+    noise_thermal.add_quantum_error(errors_measure[j], "measure", [j])
+    noise_thermal.add_quantum_error(errors_u1[j], "u1", [j])
+    noise_thermal.add_quantum_error(errors_u2[j], "u2", [j])
+    noise_thermal.add_quantum_error(errors_u3[j], "u3", [j])
+    for k in range(4):
+        noise_thermal.add_quantum_error(errors_cx[j][k], "cx", [j, k])       
+
+time_step_for_trotterization = 0.1
+time_lst = np.linspace(time_step_for_trotterization,100,20)
 counts_lst = []
 density_matrices_lst = []
+initial_state_of_system = "0100"
 for time in time_lst:
         # Execute and get counts
-        h_2_molecule_circuit = trotter_circuit(0.01,time,"0100")
+        h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
 
-        # statevector simulation
+        r"""  simulation with zero noise   """
+
+        """# statevector simulation
         simulator = Aer.get_backend("statevector_simulator")
         circ = transpile(h_2_molecule_circuit, simulator)
-        
-        result = simulator.run(circ).result()
-        statevector = result.get_statevector()
 
-        density_matrix = np.outer(statevector, np.conj(statevector))
+        density_matrix = DensityMatrix.from_instruction(circ)
 
         # tracing over the ancilla qubit
         reduced_density_matrix = partial_trace(density_matrix, [0])   
-        density_matrices_lst.append(reduced_density_matrix) 
+        density_matrices_lst.append(reduced_density_matrix)""" 
 
-        simulator = Aer.get_backend("qasm_simulator")
-        circ = transpile(h_2_molecule_circuit, simulator)
-        number_of_shots = 2048
-        result = execute(circ, simulator,shots=number_of_shots).result()
-        counts = result.get_counts()
-        counts_lst.append(counts)
+        r""" simulation with noise model  """
 
+        # Run the noisy simulation
+        sim_thermal = AerSimulator(noise_model=noise_thermal)
 
-# %%
-p_1_lst = []
-p_2_lst = []
-for j in range(len(counts_lst)):
-        p_1_lst.append(counts_lst[j]["0100"]/number_of_shots)
-        p_2_lst.append(counts_lst[j]["0101"]/number_of_shots)
+        # Transpile circuit for noisy basis gates
+        circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal,basis_gates = ["rz","cx","h","sdag","x"])
+        density_matrix = DensityMatrix.from_instruction(circ_tthermal)
+        reduced_density_matrix = partial_trace(density_matrix, [0])
+        density_matrices_lst.append(reduced_density_matrix)
 
-
-np.save("probability_0100.npy",p_1_lst)
-np.save("probability_0101.npy",p_2_lst)
-
-# %% [markdown]
-# ### Current in and out plot
-
-# %%
 I2 = np.matrix([[1,0],
                 [0,1]])
 sigma_x = np.matrix([[0,1],
@@ -408,4 +467,3 @@ for rho in density_matrices_lst:
 
 np.save("I_in_lst.npy",I_in_lst)
 np.save("I_out_lst.npy",I_out_lst)
-
