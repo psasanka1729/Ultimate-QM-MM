@@ -357,23 +357,22 @@ noise_index = int(sys.argv[1])
 T1_noise = T1_noise_lst[noise_index]
 T2_noise = T2_noise_lst[noise_index]
 
-T1_standard_deviation = T1_noise/3
-T2_standard_deviation = T2_noise/3
+T1_standard_deviation = T1_noise/4
+T2_standard_deviation = T2_noise/4
 
 # T1 and T2 values for qubits 0-3
-T1s = np.random.normal(T1_noise, T1_standard_deviation, 4)
-T2s = np.random.normal(T2_noise, T2_standard_deviation, 4)
+T1s = np.random.normal(T1_noise, T1_standard_deviation, L+1)
+T2s = np.random.normal(T2_noise, T2_standard_deviation, L+1)
 # Truncate random T2s <= T1s
-T2s = np.array([min(T2s[j], 2 * T1s[j]) for j in range(4)])
+T2s = np.array([min(T2s[j], 2 * T1s[j]) for j in range(L+1)])
 
 # Instruction times (in nanoseconds)
 time_u1 = 0   # virtual gate
-time_u2 = 50  # (single X90 pulse)
-time_u3 = 100 # (two X90 pulses)
-time_cx = 300
-time_reset = 1000  # 1 microsecond
-time_measure = 1000 # 1 microsecond
-
+time_u2 = 5  # (single X90 pulse)
+time_u3 = 10 # (two X90 pulses)
+time_cx = 30
+time_reset = 100  # 1 microsecond
+time_measure = 100 # 1 microsecond
 
 # QuantumError objects
 errors_reset = [thermal_relaxation_error(t1, t2, time_reset)
@@ -390,47 +389,87 @@ errors_cx = [[thermal_relaxation_error(t1a, t2a, time_cx).expand(
              thermal_relaxation_error(t1b, t2b, time_cx))
               for t1a, t2a in zip(T1s, T2s)]
                for t1b, t2b in zip(T1s, T2s)]
+               
+# Example error probabilities
+p_reset = 0.03
+p_meas = 0.01
+p_gate1 = 0.05               
+# QuantumError objects
+error_reset_single_qubit = pauli_error([('X', p_reset), ('I', 1 - p_reset)])
+error_meas_single_qubit = pauli_error([('X',p_meas), ('I', 1 - p_meas)])
+error_gate1_single_qubit = pauli_error([('X',p_gate1), ('I', 1 - p_gate1)])
+error_gate2_single_qubit = error_gate1_single_qubit.tensor(error_gate1_single_qubit)
 
 # Add errors to noise model
-noise_thermal = NoiseModel()
-for j in range(4):
-    noise_thermal.add_quantum_error(errors_reset[j], "reset", [j])
-    noise_thermal.add_quantum_error(errors_measure[j], "measure", [j])
-    noise_thermal.add_quantum_error(errors_u1[j], "u1", [j])
-    noise_thermal.add_quantum_error(errors_u2[j], "u2", [j])
-    noise_thermal.add_quantum_error(errors_u3[j], "u3", [j])
-    for k in range(4):
-        noise_thermal.add_quantum_error(errors_cx[j][k], "cx", [j, k])       
+noise_thermal_single_qubit = NoiseModel()
+warning_status = True
+for j in range(L+1):
+    noise_thermal_single_qubit.add_quantum_error(error_reset_single_qubit, "reset", [j],warnings=warning_status)
+    noise_thermal_single_qubit.add_quantum_error(errors_reset[j], "reset", [j],warnings=warning_status)
+
+    noise_thermal_single_qubit.add_quantum_error(error_meas_single_qubit, "measure", [j],warnings=warning_status)
+    noise_thermal_single_qubit.add_quantum_error(errors_measure[j], "measure", [j],warnings=warning_status)
+
+    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u1", [j],warnings=warning_status)
+    noise_thermal_single_qubit.add_quantum_error(errors_u1[j], "u1", [j],warnings=warning_status)
+
+    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u2", [j],warnings=warning_status)
+    noise_thermal_single_qubit.add_quantum_error(errors_u2[j], "u2", [j],warnings=warning_status)
+
+    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u3", [j],warnings=warning_status)
+    noise_thermal_single_qubit.add_quantum_error(errors_u3[j], "u3", [j],warnings=warning_status)
+    for k in range(L+1):
+        noise_thermal_single_qubit.add_quantum_error(error_gate2_single_qubit, "cx", [j, k],warnings=warning_status) 
+        noise_thermal_single_qubit.add_quantum_error(errors_cx[j][k], "cx", [j, k],warnings=warning_status)      
+
+def counts_to_statevector(counts):
+    # Get the total number of counts
+    total_counts = sum(counts.values())
+    
+    # Initialize an empty statevector
+    statevector = []
+    
+    # For each state in the counts
+    for state, count in counts.items():
+        # Calculate the probability of the state
+        probability = count / total_counts
+        
+        # Convert the binary state to a decimal index
+        index = int(state, 2)
+        
+        # Initialize a state with all zeros
+        current_state = np.zeros((2**len(state),), dtype=np.complex128)
+        
+        # Set the amplitude of the state to the square root of the probability
+        current_state[index] = np.sqrt(probability)
+        
+        # Add the state to the statevector
+        statevector.append(current_state)
+    
+    # Return the sum of all states
+    return sum(statevector)
 
 time_step_for_trotterization = 0.1
 time_lst = np.linspace(time_step_for_trotterization,100,20)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
+
 for time in time_lst:
         # Execute and get counts
         h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
-
-        r"""  simulation with zero noise   """
-
-        """# statevector simulation
-        simulator = Aer.get_backend("statevector_simulator")
-        circ = transpile(h_2_molecule_circuit, simulator)
-
-        density_matrix = DensityMatrix.from_instruction(circ)
-
-        # tracing over the ancilla qubit
-        reduced_density_matrix = partial_trace(density_matrix, [0])   
-        density_matrices_lst.append(reduced_density_matrix)""" 
-
-        r""" simulation with noise model  """
-
         # Run the noisy simulation
-        sim_thermal = AerSimulator(noise_model=noise_thermal)
+        sim_thermal = AerSimulator(noise_model=noise_thermal_single_qubit)
+        circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["u1","u2","u3","cx","reset"])
 
-        # Transpile circuit for noisy basis gates
-        circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal,basis_gates = ["rz","cx","h","sdag","x"])
-        density_matrix = DensityMatrix.from_instruction(circ_tthermal)
+        #density_matrix = DensityMatrix.from_instruction(circ_tthermal)
+
+        result_thermal = sim_thermal.run(circ_tthermal).result()
+        #statevector = result.get_statevector()
+        counts_thermal = result_thermal.get_counts()
+        statevector = counts_to_statevector(counts_thermal)
+        density_matrix = np.outer(statevector, np.conj(statevector))  
+        #print(statevector.size)
         reduced_density_matrix = partial_trace(density_matrix, [0])
         density_matrices_lst.append(reduced_density_matrix)
 
