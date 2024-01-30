@@ -350,8 +350,8 @@ def trotter_circuit(time_step,final_time,initial_state):
     #print("Circuit depth = ",qc.depth())
     return qc
 
-T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
-T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
+T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3,1000e3,1200e3,1400e3,1600e3,1800e3,2000e3]
+T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3,1000e3,1200e3,1400e3,1600e3,1800e3,2000e3]
 
 noise_index = int(sys.argv[1])
 
