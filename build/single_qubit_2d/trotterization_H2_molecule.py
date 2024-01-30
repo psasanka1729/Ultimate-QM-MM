@@ -320,7 +320,7 @@ def trotter_circuit(time_step,final_time,initial_state):
     anc = QuantumRegister(1,"ancilla")
 
     # Add a classical register
-    cr = ClassicalRegister(L,"c")
+    cr = ClassicalRegister(L+1,"c")
     # Create a new quantum circuit with the classical register
     qc = QuantumCircuit(anc,qr, cr)
 
@@ -341,10 +341,11 @@ def trotter_circuit(time_step,final_time,initial_state):
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
 
-    """qc.measure(qr[3], cr[3])   
+    qc.measure(anc,cr[4])
+    qc.measure(qr[3], cr[3])   
     qc.measure(qr[2], cr[2])
     qc.measure(qr[1], cr[1])
-    qc.measure(qr[0], cr[0])""";
+    qc.measure(qr[0], cr[0]);
 
     #print("Circuit depth = ",qc.depth())
     return qc
@@ -402,7 +403,7 @@ error_gate2_single_qubit = error_gate1_single_qubit.tensor(error_gate1_single_qu
 
 # Add errors to noise model
 noise_thermal_single_qubit = NoiseModel()
-warning_status = True
+warning_status = False
 for j in range(L+1):
     noise_thermal_single_qubit.add_quantum_error(error_reset_single_qubit, "reset", [j],warnings=warning_status)
     noise_thermal_single_qubit.add_quantum_error(errors_reset[j], "reset", [j],warnings=warning_status)
