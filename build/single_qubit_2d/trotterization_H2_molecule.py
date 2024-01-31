@@ -320,7 +320,7 @@ def trotter_circuit(time_step,final_time,initial_state):
     anc = QuantumRegister(1,"ancilla")
 
     # Add a classical register
-    cr = ClassicalRegister(L+1,"c")
+    cr = ClassicalRegister(L,"c")
     # Create a new quantum circuit with the classical register
     qc = QuantumCircuit(anc,qr, cr)
 
@@ -341,39 +341,44 @@ def trotter_circuit(time_step,final_time,initial_state):
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
 
-    qc.measure(anc,cr[4])
-    qc.measure(qr[3], cr[3])   
+    """qc.measure(qr[3], cr[3])   
     qc.measure(qr[2], cr[2])
     qc.measure(qr[1], cr[1])
-    qc.measure(qr[0], cr[0]);
+    qc.measure(qr[0], cr[0])""";
 
     #print("Circuit depth = ",qc.depth())
     return qc
 
-T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3,1000e3,1200e3,1400e3,1600e3,1800e3,2000e3]
-T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3,1000e3,1200e3,1400e3,1600e3,1800e3,2000e3]
+#T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
+#T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
 
 noise_index = int(sys.argv[1])
 
-T1_noise = T1_noise_lst[noise_index]
-T2_noise = T2_noise_lst[noise_index]
+noise_factor = np.linspace(1,3,16)
+#T1_noise = T1_noise_lst[noise_index]
+#T2_noise = T2_noise_lst[noise_index]
 
-T1_standard_deviation = T1_noise/4
-T2_standard_deviation = T2_noise/4
+T1_noise = 213.07e3*noise_factor
+T2_noise = 115.57e3*noise_factor
+
+T1_standard_deviation = T1_noise/2
+T2_standard_deviation = T2_noise/2
 
 # T1 and T2 values for qubits 0-3
-T1s = np.random.normal(T1_noise, T1_standard_deviation, L+1)
-T2s = np.random.normal(T2_noise, T2_standard_deviation, L+1)
+T1s = np.random.normal(T1_noise, T1_standard_deviation, L+1) # Sampled from normal distribution mean 50 microsec
+T2s = np.random.normal(T2_noise, T2_standard_deviation, L+1)  # Sampled from normal distribution mean 50 microsec
+
 # Truncate random T2s <= T1s
 T2s = np.array([min(T2s[j], 2 * T1s[j]) for j in range(L+1)])
 
 # Instruction times (in nanoseconds)
 time_u1 = 0   # virtual gate
-time_u2 = 5  # (single X90 pulse)
-time_u3 = 10 # (two X90 pulses)
-time_cx = 30
-time_reset = 100  # 1 microsecond
-time_measure = 100 # 1 microsecond
+time_u2 = 50  # (single X90 pulse)
+time_u3 = 100 # (two X90 pulses)
+time_sx = 100
+time_cx = 300
+time_reset = 1000  # 1 microsecond
+time_measure = 1000 # 1 microsecond
 
 # QuantumError objects
 errors_reset = [thermal_relaxation_error(t1, t2, time_reset)
@@ -386,42 +391,30 @@ errors_u2  = [thermal_relaxation_error(t1, t2, time_u2)
               for t1, t2 in zip(T1s, T2s)]
 errors_u3  = [thermal_relaxation_error(t1, t2, time_u3)
               for t1, t2 in zip(T1s, T2s)]
+errors_sx  = [thermal_relaxation_error(t1, t2, time_sx)
+              for t1, t2 in zip(T1s, T2s)]              
 errors_cx = [[thermal_relaxation_error(t1a, t2a, time_cx).expand(
              thermal_relaxation_error(t1b, t2b, time_cx))
               for t1a, t2a in zip(T1s, T2s)]
                for t1b, t2b in zip(T1s, T2s)]
-               
-# Example error probabilities
-p_reset = 0.03
-p_meas = 0.01
-p_gate1 = 0.05               
-# QuantumError objects
-error_reset_single_qubit = pauli_error([('X', p_reset), ('I', 1 - p_reset)])
-error_meas_single_qubit = pauli_error([('X',p_meas), ('I', 1 - p_meas)])
-error_gate1_single_qubit = pauli_error([('X',p_gate1), ('I', 1 - p_gate1)])
-error_gate2_single_qubit = error_gate1_single_qubit.tensor(error_gate1_single_qubit)
+errors_ecr = [[thermal_relaxation_error(t1a, t2a, time_cx).expand(
+             thermal_relaxation_error(t1b, t2b, time_cx))
+              for t1a, t2a in zip(T1s, T2s)]
+               for t1b, t2b in zip(T1s, T2s)]               
 
 # Add errors to noise model
-noise_thermal_single_qubit = NoiseModel()
-warning_status = False
+noise_thermal = NoiseModel()
 for j in range(L+1):
-    noise_thermal_single_qubit.add_quantum_error(error_reset_single_qubit, "reset", [j],warnings=warning_status)
-    noise_thermal_single_qubit.add_quantum_error(errors_reset[j], "reset", [j],warnings=warning_status)
-
-    noise_thermal_single_qubit.add_quantum_error(error_meas_single_qubit, "measure", [j],warnings=warning_status)
-    noise_thermal_single_qubit.add_quantum_error(errors_measure[j], "measure", [j],warnings=warning_status)
-
-    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u1", [j],warnings=warning_status)
-    noise_thermal_single_qubit.add_quantum_error(errors_u1[j], "u1", [j],warnings=warning_status)
-
-    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u2", [j],warnings=warning_status)
-    noise_thermal_single_qubit.add_quantum_error(errors_u2[j], "u2", [j],warnings=warning_status)
-
-    noise_thermal_single_qubit.add_quantum_error(error_gate1_single_qubit, "u3", [j],warnings=warning_status)
-    noise_thermal_single_qubit.add_quantum_error(errors_u3[j], "u3", [j],warnings=warning_status)
+    noise_thermal.add_quantum_error(errors_reset[j], "reset", [j])
+    noise_thermal.add_quantum_error(errors_measure[j], "measure", [j])
+    noise_thermal.add_quantum_error(errors_sx[j], "sx",[j])
+    #noise_thermal.add_quantum_error(errors_u1[j], "u1", [j])
+    #noise_thermal.add_quantum_error(errors_u2[j], "u2", [j])
+    #noise_thermal.add_quantum_error(errors_u3[j], "u3", [j])
     for k in range(L+1):
-        noise_thermal_single_qubit.add_quantum_error(error_gate2_single_qubit, "cx", [j, k],warnings=warning_status) 
-        noise_thermal_single_qubit.add_quantum_error(errors_cx[j][k], "cx", [j, k],warnings=warning_status)      
+        noise_thermal.add_quantum_error(errors_cx[j][k], "cx", [j, k])
+    for k in range(L+1):
+        noise_thermal.add_quantum_error(errors_ecr[j][k], "ecr", [j, k])              
 
 def counts_to_statevector(counts):
     # Get the total number of counts
@@ -450,8 +443,8 @@ def counts_to_statevector(counts):
     # Return the sum of all states
     return sum(statevector)
 
-time_step_for_trotterization = 0.05
-time_lst = np.linspace(time_step_for_trotterization,100,20)
+time_step_for_trotterization = 0.1
+time_lst = np.linspace(time_step_for_trotterization,500,100)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
