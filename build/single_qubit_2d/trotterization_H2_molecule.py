@@ -78,8 +78,8 @@ def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coeff
 
 full_hamiltonian = sparse_Pauli_to_dense_matrix(H_pauli_lst,H_pauli_coeff_lst);
 
-gamma_in = 0.06
-gamma_out = 0.06
+gamma_in = 1.6
+gamma_out = 1.6
 
 # %% [markdown]
 # ### $n=1$ and $n=2$ states of the Hamiltonian
@@ -340,7 +340,6 @@ def trotter_circuit(time_step,final_time,initial_state):
 
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
-
     qc.measure(anc,cr[4])
     qc.measure(qr[3], cr[3])   
     qc.measure(qr[2], cr[2])
@@ -350,20 +349,21 @@ def trotter_circuit(time_step,final_time,initial_state):
     #print("Circuit depth = ",qc.depth())
     return qc
 
+
 #T1_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
 #T2_noise_lst = [10e3,20e3,40e3,60e3,80e3,100e3,200e3,400e3,600e3,800e3]
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,3,16)[noise_index]
+noise_factor = np.linspace(1,5,16)
 #T1_noise = T1_noise_lst[noise_index]
 #T2_noise = T2_noise_lst[noise_index]
 
-T1_noise = 213.07e3*noise_factor
-T2_noise = 115.57e3*noise_factor
+T1_noise = 213.07e3*noise_factor[noise_index]
+T2_noise = 115.57e3*noise_factor[noise_index]
 
-T1_standard_deviation = T1_noise/2
-T2_standard_deviation = T2_noise/2
+T1_standard_deviation = T1_noise/4
+T2_standard_deviation = T2_noise/4
 
 # T1 and T2 values for qubits 0-3
 T1s = np.random.normal(T1_noise, T1_standard_deviation, L+1) # Sampled from normal distribution mean 50 microsec
@@ -445,7 +445,7 @@ def counts_to_statevector(counts):
     return sum(statevector)
 
 time_step_for_trotterization = 0.1
-time_lst = np.linspace(time_step_for_trotterization,500,100)
+time_lst = np.linspace(time_step_for_trotterization,100,20)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
@@ -455,7 +455,7 @@ for time in time_lst:
         h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
         # Run the noisy simulation
         sim_thermal = AerSimulator(noise_model=noise_thermal)
-        circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["u1","u2","u3","cx","reset"])
+        circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["ecr","id","rz","sx","reset","x"], optimization_level = 2)
 
         #density_matrix = DensityMatrix.from_instruction(circ_tthermal)
 
@@ -499,5 +499,6 @@ for rho in density_matrices_lst:
         I_in_lst.append(I_in(full_hamiltonian,rho).real)
         I_out_lst.append(I_out(full_hamiltonian,rho).real)
 
+#np.save("density_matrices_lst.npy",density_matrices_lst)
 np.save("I_in_lst.npy",I_in_lst)
 np.save("I_out_lst.npy",I_out_lst)
