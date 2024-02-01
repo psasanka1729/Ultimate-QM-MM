@@ -355,7 +355,7 @@ def trotter_circuit(time_step,final_time,initial_state):
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,5,16)
+noise_factor = np.linspace(1,20,16)
 #T1_noise = T1_noise_lst[noise_index]
 #T2_noise = T2_noise_lst[noise_index]
 
