@@ -454,8 +454,8 @@ for time in time_lst:
         # Execute and get counts
         h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
         # Run the noisy simulation
-        sim_thermal = AerSimulator(noise_model=noise_thermal)
-        #sim_thermal = Aer.get_backend("qasm_simulator")
+        #sim_thermal = AerSimulator(noise_model=noise_thermal)
+        sim_thermal = Aer.get_backend("aer_simulator")
         circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["ecr","id","rz","sx","reset","x"], optimization_level = 2)
 
         #density_matrix = DensityMatrix.from_instruction(circ_tthermal)
