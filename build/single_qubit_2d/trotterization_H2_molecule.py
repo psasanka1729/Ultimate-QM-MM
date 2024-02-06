@@ -355,12 +355,12 @@ def trotter_circuit(time_step,final_time,initial_state):
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,20,16)
+noise_factor = np.linspace(1,64,32)
 #T1_noise = T1_noise_lst[noise_index]
 #T2_noise = T2_noise_lst[noise_index]
 
-T1_noise = 1.e10#213.07e3*noise_factor[noise_index]
-T2_noise = 1.e10#115.57e3*noise_factor[noise_index]
+T1_noise = 213.07e3*noise_factor[noise_index]
+T2_noise = 115.57e3*noise_factor[noise_index]
 
 T1_standard_deviation = T1_noise/4
 T2_standard_deviation = T2_noise/4
@@ -445,7 +445,7 @@ def counts_to_statevector(counts):
     return sum(statevector)
 
 time_step_for_trotterization = 0.1
-time_lst = np.linspace(time_step_for_trotterization,150,20)
+time_lst = np.linspace(time_step_for_trotterization,400,20)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
