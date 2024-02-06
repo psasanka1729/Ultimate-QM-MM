@@ -78,8 +78,8 @@ def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coeff
 
 full_hamiltonian = sparse_Pauli_to_dense_matrix(H_pauli_lst,H_pauli_coeff_lst);
 
-gamma_in = 1.6
-gamma_out = 1.6
+gamma_in = 2.6
+gamma_out = 2.6
 
 # %% [markdown]
 # ### $n=1$ and $n=2$ states of the Hamiltonian
@@ -359,8 +359,8 @@ noise_factor = np.linspace(1,20,16)
 #T1_noise = T1_noise_lst[noise_index]
 #T2_noise = T2_noise_lst[noise_index]
 
-T1_noise = 1.e20#213.07e3*noise_factor[noise_index]
-T2_noise = 1.e20#115.57e3*noise_factor[noise_index]
+T1_noise = 1.e10#213.07e3*noise_factor[noise_index]
+T2_noise = 1.e10#115.57e3*noise_factor[noise_index]
 
 T1_standard_deviation = T1_noise/4
 T2_standard_deviation = T2_noise/4
@@ -454,18 +454,13 @@ for time in time_lst:
         # Execute and get counts
         h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
         # Run the noisy simulation
-        #sim_thermal = AerSimulator(noise_model=noise_thermal)
-        sim_thermal = Aer.get_backend("aer_simulator")
+        sim_thermal = AerSimulator(noise_model=noise_thermal)
+        #sim_thermal = Aer.get_backend("aer_simulator")
         circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["ecr","id","rz","sx","reset","x"], optimization_level = 2)
-
-        #density_matrix = DensityMatrix.from_instruction(circ_tthermal)
-
         result_thermal = sim_thermal.run(circ_tthermal).result()
-        #statevector = result.get_statevector()
         counts_thermal = result_thermal.get_counts()
         statevector = counts_to_statevector(counts_thermal)
         density_matrix = np.outer(statevector, np.conj(statevector))  
-        #print(statevector.size)
         reduced_density_matrix = partial_trace(density_matrix, [0])
         density_matrices_lst.append(reduced_density_matrix)
 
