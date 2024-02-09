@@ -1,5 +1,6 @@
 # %%
 import os
+import sys
 import numpy as np
 from qiskit import*
 import qiskit
@@ -11,7 +12,7 @@ from qiskit.quantum_info import partial_trace
 from qiskit_aer.noise import (NoiseModel, QuantumError, ReadoutError,
     pauli_error, depolarizing_error, thermal_relaxation_error)
 from qiskit.quantum_info import DensityMatrix
-from scip.linalg import kron
+from scipy.sparse import csr_matrix, kron
 
 # %%
 def partial_trace_4_4(matrix):
@@ -460,8 +461,13 @@ I_in_term_1_term_2_term_3 = add_similar_elements((I_in_term_1_term_2[0],I_in_ter
 # #### Noise model for the simulator
 
 # %%
-T1_noise = 213.07e3
-T2_noise = 115.57e3
+
+noise_index = int(sys.argv[1])
+
+noise_factor = np.linspace(1,64,32)
+
+T1_noise = 213.07e3/noise_factor[noise_index]
+T2_noise = 115.57e3/noise_factor[noise_index]
 
 T1_standard_deviation = T1_noise/4
 T2_standard_deviation = T2_noise/4
@@ -702,10 +708,9 @@ def single_pauli_expectation_value(time):
                 observable_counts_dict_sorted[pauli_strings] = sorted_d
         return observable_counts_dict_sorted       
 
-time_lst = np.linspace(0.1,30,10)
+time_lst = np.linspace(0.1,100,20)
 
 for time in time_lst:        
         t = single_pauli_expectation_value(time)
-        os.chdir("/Users/sasankadowarah/Ultimate_QM_MM/current_data_folder")
         np.save("t_"+str(np.around(time,2))+".npy",t)
 
