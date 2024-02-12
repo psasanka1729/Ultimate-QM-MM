@@ -11,7 +11,7 @@ mkdir -p $SCRATCH_DIR
 
 EXEC=expectation_value_of_pauli_strings.py
  #single_qubit_lindblad_equation.py
-HELPER=""
+HELPER="hydrogen_jw_hamiltonian.txt"
 
 cd $LOCAL_DIR/$RUN_NAME
 cp $EXEC $SCRATCH_DIR/
