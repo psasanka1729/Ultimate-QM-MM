@@ -1,3 +1,52 @@
+commit 6f28f4cec1df9c6f058ba0895dd384136bdf76e8
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Fri Feb 9 16:27:08 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 0c45f9faf8d995536f8a77be978c88b588169c7f
+Merge: cb5bcb1 423866e
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Fri Feb 9 16:26:33 2024 -0600
+
+    Merge https://github.com/psasanka1729/Ultimate-QM-MM
+
+commit 423866ef4e5cf4f63a4cf918540514fde0d71d3b
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Fri Feb 9 16:24:45 2024 -0600
+
+    I in and I out calculation
+
+commit ad83896531a7f50d043654918baa8d2df7fa76d6
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Fri Feb 9 15:49:33 2024 -0600
+
+    error in I in fixed
+
+commit 856c6168840098cbea0a413b444a756037f9abe5
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Fri Feb 9 14:08:52 2024 -0600
+
+    working code for I in
+
+commit cb5bcb17f143f17848943abfb7c62daab990351e
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Fri Feb 9 14:04:33 2024 -0600
+
+    Commit before run single_qubit_2d
+
+commit 55c5fb042244dcd079ea9007ceed6a1c9ef215e5
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Fri Feb 9 14:02:47 2024 -0600
+
+    Update expectation_value_of_pauli_strings.py
+
+commit 5f5f0f515d82d060e7cdbcfd66e1ec6cc226d8af
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Fri Feb 9 14:01:59 2024 -0600
+
+    cluster backup
+
 commit 0ba340a443e43e0587de4517b21ca7506936f6ca
 Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
 Date:   Fri Feb 9 11:48:37 2024 -0600
