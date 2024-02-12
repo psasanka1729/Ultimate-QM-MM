@@ -1,3 +1,4 @@
+# %%
 import os
 import sys
 import numpy as np
@@ -14,8 +15,6 @@ from qiskit.quantum_info import DensityMatrix
 import matplotlib.pyplot as plt
 from scipy.sparse import csr_matrix, kron
 
-
-# %%
 def partial_trace_4_4(matrix):
         return np.matrix([[matrix[0,0]+matrix[1,1], matrix[0,2]+matrix[1,3]],
                           [matrix[0,2]+matrix[3,1], matrix[2,2]+matrix[3,3]]])
@@ -45,15 +44,20 @@ gamma_out = 2.6
 # #### Hamiltonian of $H_{2}$ with Jordan Wigner transformation
 
 # %%
+# Define a function to convert the second column to complex numbers
+def complex_converter(s):
+    return complex(s.decode('utf-8'))
+
+# Use numpy.loadtxt with the converter
+data = np.loadtxt("hydrogen_jw_hamiltonian.txt", delimiter='\t', converters={1: complex_converter}, dtype=object)
+
+# Separate the data into two arrays
+H_pauli_lst, H_pauli_coeff_lst = data.T
+
+
+# %%
 # H2 molecule after Jordan Wigner transformation
 L = 4
-H_pauli_lst = ['IIII','IIIZ', 'IIZI', 'IIZZ', 'IZII',
-               'IZIZ', 'ZIII', 'ZIIZ','YYYY', 'XXYY', 'YYXX', 'XXXX','IZZI', 'ZIZI', 'ZZII']
-H_pauli_coeff_lst = [-0.81054798+0.j,  0.17218393+0.j, -0.22575349+0.j,  0.12091263+0.j,
-  0.17218393+0.j,  0.16892754+0.j, -0.22575349+0.j,  0.16614543+0.j,
-  0.0452328 +0.j,  0.0452328 +0.j,  0.0452328 +0.j,  0.0452328 +0.j,
-  0.16614543+0.j,  0.17464343+0.j,  0.12091263+0.j]
-
 
 def sparse_Pauli_to_dense_matrix(sparse_Pauli_matrices_lst, Pauli_matrices_coefficients):
     
@@ -140,13 +144,6 @@ for m in range(len(n_2_sector_basis_states)):
 # %%
 #L = 4
 def one_time_step_circuit(dt,barrier_status):
-
-    def ZZ_gate_circuit(qubit_2, qubit_1, coefficient, delta_t): # count qubits from right as in Qiskit
-        qc_zz = QuantumCircuit(L)
-        qc_zz.cx(qubit_1,qubit_2)
-        qc_zz.rz(2*coefficient*delta_t, qubit_2)
-        qc_zz.cx(qubit_1,qubit_2)
-        return qc_zz
     
     # Existing quantum registers
     qr = QuantumRegister(L,"q")
@@ -163,6 +160,7 @@ def one_time_step_circuit(dt,barrier_status):
     qc_h2.rz(2*H_pauli_coeff_lst[2].real*dt,qr[1])
     qc_h2.rz(2*H_pauli_coeff_lst[4].real*dt,qr[2])
     qc_h2.rz(2*H_pauli_coeff_lst[6].real*dt,qr[3])
+
     if barrier_status == True:
         qc_h2.barrier()
     else:
@@ -322,7 +320,10 @@ def one_time_step_circuit(dt,barrier_status):
     qc_h2.h(qr[0])
     qc_h2.h(qr[1])
 
-    qc_h2.barrier()
+    if barrier_status == True:
+        qc_h2.barrier()
+    else:
+        pass
 
     # ancilla qubit
 
@@ -344,7 +345,6 @@ def one_time_step_circuit(dt,barrier_status):
     qc_h2.x(qr[0])
     qc_h2.initialize([1,0],anc)
     return qc_h2
-#one_time_step_circuit(0.1,True).draw("mpl",style="iqp",scale=2)#.savefig("H2_Lindbladian_circuit_not_optimized.jpg",dpi=200)
 
 # %% [markdown]
 # #### Complete trotter circuit for time evolution
@@ -373,10 +373,10 @@ def time_evolved_density_matrix(time_step,final_time,initial_state):
         is assigned to the bottom qubit and the last value of the initial state string
         is assigned to the top qubit!
     """
-    #qc.initialize(qubit_dict[initial_state[3]],qr[0])
-    #qc.initialize(qubit_dict[initial_state[2]],qr[1])
-    #qc.initialize(qubit_dict[initial_state[1]],qr[2])
-    #qc.initialize(qubit_dict[initial_state[0]],qr[3])
+    qc.initialize(qubit_dict[initial_state[3]],qr[0])
+    qc.initialize(qubit_dict[initial_state[2]],qr[1])
+    qc.initialize(qubit_dict[initial_state[1]],qr[2])
+    qc.initialize(qubit_dict[initial_state[0]],qr[3])
 
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
@@ -389,7 +389,6 @@ def time_evolved_density_matrix(time_step,final_time,initial_state):
     #print("Circuit depth = ",qc.depth())
     #qc.measure_all()
     return qc
-#time_evolved_density_matrix(0.1,0.1,"0100").draw("mpl",style="iqp",scale=2)
 
 # %% [markdown]
 # #### $I_{\rm in}$ in terms of Pauli operators
@@ -403,7 +402,7 @@ Output: coefficent in front, product of Pauli matrix 1 and 2
 for example for X and Y it will return the pair 1j,Z.
 
 """
-def pauli_product(pauli_i,pauli_j):
+def pauli_product(pauli_i,pauli_j): # verified for all possible combinations
 
         I2 = np.array([[1,0],[0,1]])
         sigma_x =np.array([[0,1],[1,0]])
@@ -446,34 +445,43 @@ def hamiltonian_product_pauli(original_hamiltonian_pauli_lst, original_hamiltoni
                         pauli_strings = original_hamiltonian_pauli_lst[i]
                         pauli_coeff  = original_hamiltonian_pauli_coeff[i]
 
-                        # the given Pauli matrix will be multiplied to the leftmost matrix in the Pauli string
-                        operator_on_qubit_L = pauli_strings[0]
+                        """
+                        The given Pauli matrix will be multiplied to the fourth qubit of each Pauli string in
+                        the Hamiltonian. This is because L_1 = IIIS^{(0)}_{-}. The Pauli matrix in the original
+                        string in zero th position is the Lth position.
+                        """
+                        operator_on_qubit_0 = pauli_strings[-1]
 
                         # pauli matrix multiplied from left
-                        new_pauli_product = pauli_product(pauli_matrix_to_multiply,operator_on_qubit_L)
+                        new_pauli_product = pauli_product(pauli_matrix_to_multiply,operator_on_qubit_0)
 
-                        # appending the new Pauli matrix string to the old Pauli string
-                        new_hamiltonian_pauli_lst.append(new_pauli_product[1]+pauli_strings[1:L])
+                        # updating the Pauli string
+                        new_hamiltonian_pauli_lst.append(pauli_strings[0:L-1]+new_pauli_product[1])
 
-                        # multiplying the coefficient to the old coefficient
+                        # updating the Pauli coefficient
                         new_hamiltonian_pauli_coeff.append(pauli_coeff*new_pauli_product[0])
 
         elif action_direction == "right":
+
                 for i in range(len(original_hamiltonian_pauli_lst)):
 
                         pauli_strings = original_hamiltonian_pauli_lst[i]
                         pauli_coeff  = original_hamiltonian_pauli_coeff[i]
 
-                        # the given Pauli matrix will be multiplied to the rightmost matrix in the Pauli string
+                        """
+                        The given Pauli matrix will be multiplied to the fourth qubit of each Pauli string in
+                        the Hamiltonian. This is because L_1 = IIIS^{(0)}_{-}. The Pauli matrix in the original
+                        string in zero th position is the Lth position.
+                        """
                         operator_on_qubit_0 = pauli_strings[-1]
 
                         # pauli matrix multiplied from right
                         new_pauli_product = pauli_product(operator_on_qubit_0,pauli_matrix_to_multiply)
 
-                        # appending the new Pauli matrix string to the old Pauli string
+                        # updating the Pauli string
                         new_hamiltonian_pauli_lst.append(pauli_strings[0:L-1]+new_pauli_product[1])
 
-                        # multiplying the coefficient to the old coefficient
+                        # updating the Pauli coefficient
                         new_hamiltonian_pauli_coeff.append(pauli_coeff*new_pauli_product[0])
 
         return new_hamiltonian_pauli_lst, new_hamiltonian_pauli_coeff              
@@ -588,11 +596,11 @@ def L_2_dag_H_L_2():
         h8,p8 = hamiltonian_product_pauli(h7,p7,"Y","right")  # YHY
 
         ## adding the coefficients of similar Pauli strings
-        # XHX - 1j*XHY
+        # XHX + 1j*XHY
         h_iter_1, p_iter_1 = add_similar_elements((h2,np.array(p2)),(h4,1j*np.array(p4)))  
-        # XHX - 1j*XHY + 1j*YHX
+        # XHX + 1j*XHY - 1j*YHX
         h_iter_2, p_iter_2 = add_similar_elements((h_iter_1,p_iter_1),(h6,-1j*np.array(p6)))
-        # XHX - 1j*XHY + 1j*YHX + YHY
+        # XHX + 1j*XHY - 1j*YHX + YHY
         h_iter_3, p_iter_3 = add_similar_elements((h_iter_2,p_iter_2),(h8,np.array(p8)))
 
         return h_iter_3, (1/4)*np.array(p_iter_3)
@@ -601,7 +609,7 @@ def H_L2_dag_L2():
 
         ## H L2_dag L_2 = (1/2)*(HI - HZ)
 
-        # H*I
+        # HI
         h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","right")
         # HZ
         h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","right")
@@ -612,12 +620,13 @@ def H_L2_dag_L2():
 
 def L_2_dag_L_2_H():
 
-        # L2_dag L_2 H = (1/2)*(H - ZH)
+        # L2_dag L_2 H = (1/2)*(IH - ZH)
 
-        # I*H
+        # IH
         h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","left")
         # ZH
         h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","left")
+        
         h_iter_1, p_iter_1 = add_similar_elements((h1,np.array(p1)),(h2,-np.array(p2)))
 
         return h_iter_1, (1/2)*np.array(p_iter_1)
@@ -628,17 +637,15 @@ I_out_term_1_term_2 = add_similar_elements((L_2_dag_H_L_2()[0],L_2_dag_H_L_2()[1
 # L_2_dag_H_L_2 - (1/2)*H_L2_dag_L2 - (1/2)*L_2_dag_L_2_H
 I_out_term_1_term_2_term_3 = add_similar_elements((I_out_term_1_term_2[0],I_out_term_1_term_2[1]),(L_2_dag_L_2_H()[0],(-1/2)*np.array(L_2_dag_L_2_H()[1])))        
 
+# %%
+#sparse_Pauli_to_dense_matrix(L_1_dag_H_L_1()[0],L_1_dag_H_L_1()[1]).A.conj().T - sparse_Pauli_to_dense_matrix(L_1_dag_H_L_1()[0],L_1_dag_H_L_1()[1]).A
+
 # %% [markdown]
 # #### Noise model for the simulator
 
 # %%
-
-noise_index = int(sys.argv[1])
-
-noise_factor = np.linspace(1,64,32)
-
-T1_noise = 213.07e3/noise_factor[noise_index]
-T2_noise = 115.57e3/noise_factor[noise_index]
+T1_noise = 213.07e3
+T2_noise = 115.57e3
 
 T1_standard_deviation = T1_noise/4
 T2_standard_deviation = T2_noise/4
@@ -707,6 +714,7 @@ r"""
 """
 
 def measure_observables_circuit(observable_string):
+    
     # Existing quantum registers
     qr = QuantumRegister(L,"q")
     anc = QuantumRegister(1,"ancilla")
@@ -729,15 +737,23 @@ def measure_observables_circuit(observable_string):
         elif observable_string[i] == "Y":
             qc_basis_change.sdg(i+1)
             qc_basis_change.h(i+1)
+
     #qc_basis_change.measure(anc,cr[4])
     qc_basis_change.measure(qr[3], cr[3])   
     qc_basis_change.measure(qr[2], cr[2])
     qc_basis_change.measure(qr[1], cr[1])
-    qc_basis_change.measure(qr[0], cr[0])              
+    qc_basis_change.measure(qr[0], cr[0])  
+
     return qc_basis_change
-#measure_observables_circuit(I_in_term_1_term_2_term_3[0][7]).draw("mpl", style= "iqp",scale=1)
+#measure_observables_circuit(I_in_term_1_term_2_term_3[0][2]).draw("mpl", style= "iqp",scale=1)
 
 # %%
+r"""
+
+This function takes a Pauli string as input and returns the counts from noisy model.
+
+"""
+
 def trotter_simulation_and_return_counts(pauli_string_to_calculate_expectation_value,
                                          time_step_for_trotterization,
                                          initial_state_of_system,
@@ -772,7 +788,9 @@ output: "XIII" "IXII" "IIYI" "IIIZ"
 def pauli_string_components(pauli_string):
 
         pauli_string_decomposed = []
+
         for i in range(len(pauli_string)):
+
                 pauli_string_element = pauli_string[i]
                 # number of pauli element on left
                 left_string_length = i
@@ -781,8 +799,10 @@ def pauli_string_components(pauli_string):
                 pauli_string_decomposed.append([left_string_length,pauli_string_element,right_string_length])
 
         string_components = []
+
         for i in pauli_string_decomposed:
                 string_components.append("I"*i[0] + i[1] + "I"*i[2])
+
         return string_components     
         
 r"""
@@ -839,10 +859,15 @@ def expectation_value_of_a_pauli_string(pauli_string,
                                         products_array[i,j] *= -1
                                 probability_array[i,j] = bit_strings_and_counts[j][1]/number_of_shots
 
-        return np.sum(np.prod(products_array*probability_array, axis = 0))
-#expectation_value_of_a_pauli_string("YYYY")        
+        return np.sum(np.prod(products_array*probability_array, axis = 0))    
 
 # %%
+r"""
+
+This function returns the expectation value of all the strings
+["IIIX","IIXI","IXII","XIII","IIIY","IIYI","IYII","YIII","IIIZ","IIZI","IZII","ZIII"].
+
+"""
 def single_pauli_expectation_value(time):
 
         r"""
@@ -853,6 +878,7 @@ def single_pauli_expectation_value(time):
         single_pauli_strings_lst = ["IIIX","IIXI","IXII","XIII",
                                      "IIIY","IIYI","IYII","YIII",
                                      "IIIZ","IIZI","IZII","ZIII"]
+
         number_of_shots = 8192
         time_step_for_trotterization = 0.1
         initial_state_of_system = "0100"
@@ -863,6 +889,7 @@ def single_pauli_expectation_value(time):
 
                 pauli_string = single_pauli_strings_lst[i]
 
+                # simulating the pauli strings
                 sim_counts = trotter_simulation_and_return_counts(pauli_string,
                                                 time_step_for_trotterization,
                                                 initial_state_of_system,
@@ -872,15 +899,18 @@ def single_pauli_expectation_value(time):
 
                 observable_counts_dict[pauli_string] = sim_counts
 
-        # sorts the dictionary of counts such that it starts with "0000" and ends with "1111"
         observable_counts_dict_sorted = {}
+
         for pauli_strings in observable_counts_dict:
+                
                 d = observable_counts_dict[pauli_strings]
+                # sorts the dictionary of counts such that it starts with "0000" and ends with "1111"
                 sorted_d = {k: d[k] for k in sorted(d, key=lambda x: int(x, 2))}
                 observable_counts_dict_sorted[pauli_strings] = sorted_d
-        return observable_counts_dict_sorted       
 
-time_lst = np.linspace(0.1,30,20)
+        return observable_counts_dict_sorted
+
+time_lst = np.linspace(0.1,100,20)
 
 for time in time_lst:        
         t = single_pauli_expectation_value(time)
