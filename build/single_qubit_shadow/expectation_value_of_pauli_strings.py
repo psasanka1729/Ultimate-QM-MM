@@ -915,7 +915,7 @@ def single_pauli_expectation_value(time):
 
         return observable_counts_dict_sorted
 
-time_lst = np.linspace(0.1,100,20)
+time_lst = np.linspace(0.1,10,10)
 
 for time in time_lst:        
         t = single_pauli_expectation_value(time)
