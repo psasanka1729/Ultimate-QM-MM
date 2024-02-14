@@ -15,6 +15,8 @@ from qiskit.quantum_info import DensityMatrix
 import matplotlib.pyplot as plt
 from scipy.sparse import csr_matrix, kron
 
+
+# %%
 def partial_trace_4_4(matrix):
         return np.matrix([[matrix[0,0]+matrix[1,1], matrix[0,2]+matrix[1,3]],
                           [matrix[0,2]+matrix[3,1], matrix[2,2]+matrix[3,3]]])
@@ -97,8 +99,8 @@ full_hamiltonian = sparse_Pauli_to_dense_matrix(H_pauli_lst,H_pauli_coeff_lst);
 # #### $n=1$ and $n=2$ states of the Hamiltonian
 
 # %%
-"""# n = 1 basis states 0001,0010,0100,1000
-def ket_from_binary_string(binary_string):
+# n = 1 basis states 0001,0010,0100,1000
+"""def ket_from_binary_string(binary_string):
         bin_dict = {"0":np.matrix([1,0]), "1":np.matrix([0,1])}
         b_0 = bin_dict[binary_string[-1]]
         for b in range(len(binary_string)-2,-1,-1):
@@ -130,13 +132,13 @@ for m in range(len(n_2_sector_basis_states)):
         for n in range(len(n_2_sector_basis_states)):
                 ket_m = n_2_sector_basis_states[m]
                 ket_n = n_2_sector_basis_states[n]
-                H_n_2_sector[m,n] = (ket_m *full_hamiltonian* ket_n.T).A[0,0]""";
+                H_n_2_sector[m,n] = (ket_m *full_hamiltonian* ket_n.T).A[0,0]
 
 # %%
-#n_2_eigvals, n_2_eigstates = np.linalg.eigh(H_n_2_sector)
+n_2_eigvals, n_2_eigstates = np.linalg.eigh(H_n_2_sector)
 
 # %%
-#n_1_eigvals, n_1_eigstates = np.linalg.eigh(H_n_1_sector)
+n_1_eigvals, n_1_eigstates = np.linalg.eigh(H_n_1_sector)"""
 
 # %% [markdown]
 # #### One time step circuit for trotterization
@@ -345,14 +347,18 @@ def one_time_step_circuit(dt,barrier_status):
     qc_h2.x(qr[0])
     qc_h2.initialize([1,0],anc)
     return qc_h2
+#one_time_step_circuit(0.1,True).draw("mpl",style="iqp",scale=1)#.savefig("H2_Lindbladian_circuit_not_optimized.jpg",dpi=200)
 
 # %% [markdown]
 # #### Complete trotter circuit for time evolution
 
 # %%
 def time_evolved_density_matrix(time_step,final_time,initial_state):
+
     number_of_iterations = int(final_time/time_step)
+
     #print("Number of Floquet cycles = ", number_of_iterations)
+
     transpiled_one_step_circuit = transpile(one_time_step_circuit(time_step,False), basis_gates = ["rz","cx","h",], optimization_level=2)
 
     # Existing quantum registers
@@ -373,6 +379,7 @@ def time_evolved_density_matrix(time_step,final_time,initial_state):
         is assigned to the bottom qubit and the last value of the initial state string
         is assigned to the top qubit!
     """
+
     qc.initialize(qubit_dict[initial_state[3]],qr[0])
     qc.initialize(qubit_dict[initial_state[2]],qr[1])
     qc.initialize(qubit_dict[initial_state[1]],qr[2])
@@ -380,6 +387,7 @@ def time_evolved_density_matrix(time_step,final_time,initial_state):
 
     for _ in range(number_of_iterations):
         qc = qc.compose(transpiled_one_step_circuit)
+
     """qc.measure(anc,cr[4])
     qc.measure(qr[3], cr[3])   
     qc.measure(qr[2], cr[2])
@@ -389,9 +397,7 @@ def time_evolved_density_matrix(time_step,final_time,initial_state):
     #print("Circuit depth = ",qc.depth())
     #qc.measure_all()
     return qc
-
-# %% [markdown]
-# #### $I_{\rm in}$ in terms of Pauli operators
+#time_evolved_density_matrix(0.1,0.1,"0100").draw("mpl",style="iqp",scale=2)
 
 # %%
 r"""
@@ -490,7 +496,7 @@ r"""
 
 This function takes pairs each with a string of Pauli matrices and coefficents and add the
 coefficients of the Pauli strings common to both the element in the pair.
-For example, input: (["IXII","IZIZ"],(a,b)) and (["YYXX","IZIZ"],(c,d)) output: ([]"IXII","YYXX","IZIZ"],(a,c,b+d))
+For example, input: (["IXII","IZIZ"],(a,b)) and (["YYXX","IZIZ"],(c,d)) output: (["IXII","YYXX","IZIZ"],(a,c,b+d))
 
 """
 
@@ -516,136 +522,111 @@ Below each term in the I_in is evaluated separately by using the functions defin
 #L_1 = III(X-1j*Y)/2
 def L_1_dag_H_L_1():
 
-        ## (1/4) (XHX - 1j*XHY + 1j*YHX + YHY)
         # XHX
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
-        h2, p2 = hamiltonian_product_pauli(h1,p1,"X","right") # XHX
+        xh, xp = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
+        xhx, xpx = hamiltonian_product_pauli(xh,xp,"X","right")  # XHX
 
         # XHY
-        h3,p3 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
-        h4,p4 = hamiltonian_product_pauli(h3,p3,"Y","right")  # XHY
+        xhy, xpy = hamiltonian_product_pauli(xh,xp,"Y","right")  # XHY
 
         # YHX
-        h5,p5 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left") # YH
-        h6,p6 = hamiltonian_product_pauli(h5,p5,"X","right")  # YHX
+        yh, yp = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left")  # YH
+        yhx, ypx = hamiltonian_product_pauli(yh,yp,"X","right") # YHX
 
-        # YHY
-        h7,p7 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left") # YH
-        h8,p8 = hamiltonian_product_pauli(h7,p7,"Y","right")  # YHY
+        #YHY
+        yhy, ypy = hamiltonian_product_pauli(yh,yp,"Y","right") # YHY
 
-        ## adding the coefficients of similar Pauli strings
-        # XHX - 1j*XHY
-        h_iter_1, p_iter_1 = add_similar_elements((h2,np.array(p2)),(h4,-1j*np.array(p4)))  
-        # XHX - 1j*XHY + 1j*YHX
-        h_iter_2, p_iter_2 = add_similar_elements((h_iter_1,p_iter_1),(h6,1j*np.array(p6)))
-        # XHX - 1j*XHY + 1j*YHX + YHY
-        h_iter_3, p_iter_3 = add_similar_elements((h_iter_2,p_iter_2),(h8,np.array(p8)))
-
-        return h_iter_3, (1/4)*np.array(p_iter_3)
+        # XHX-iXHY+i*YHX+YHY
+        term_1_term_2 = add_similar_elements((xhx,np.array(xpx)),(xhy,-1j*np.array(xpy)))
+        term_1_term_2_term_3 = add_similar_elements((term_1_term_2[0],np.array(term_1_term_2[1])),
+                                                    (yhx,1j*np.array(ypx)))
+        term_1_term_2_term_3_term_4 = add_similar_elements((term_1_term_2_term_3[0],np.array(term_1_term_2_term_3[1])),
+                                                    (yhy,np.array(ypy)))
+        return term_1_term_2_term_3_term_4[0], np.array(term_1_term_2_term_3_term_4[1])
 
 
-def H_L1_dag_L1():
+def ZH():
 
-        ## H L1_dag L_1 = (1/2)*(HI + HZ)
-
-        # H*I
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","right")
-        # HZ
-        h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","right")
-
-        h_iter_1, p_iter_1 = add_similar_elements((h1,np.array(p1)),(h2,np.array(p2)))
-
-        return h_iter_1, (1/2)*np.array(p_iter_1)
-
-def L_1_dag_L_1_H():
-
-        # L1_dag L_1 H = (1/2)*(H + ZH)
-
-        # I*H
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","left")
         # ZH
-        h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","left")
-        h_iter_1, p_iter_1 = add_similar_elements((h1,np.array(p1)),(h2,np.array(p2)))
+        hzh,pzh = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","left")
 
-        return h_iter_1, (1/2)*np.array(p_iter_1)
+        return hzh,np.array(pzh)
 
-# L_1_dag_H_L_1 - (1/2)*H_L1_dag_L1
-I_in_term_1_term_2 = add_similar_elements((L_1_dag_H_L_1()[0],L_1_dag_H_L_1()[1]),(H_L1_dag_L1()[0],(-1/2)*np.array(H_L1_dag_L1()[1])))
-
-# L_1_dag_H_L_1 - (1/2)*H_L1_dag_L1 - (1/2)*L_1_dag_L_1_H
-I_in_term_1_term_2_term_3 = add_similar_elements((I_in_term_1_term_2[0],I_in_term_1_term_2[1]),(L_1_dag_L_1_H()[0],(-1/2)*np.array(L_1_dag_L_1_H()[1])))
-
-#L_2 = III(X+1j*Y)/2
-def L_2_dag_H_L_2():
-
-        ## (1/4) (XHX + 1j*XHY - 1j*YHX + YHY)
-        # XHX
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
-        h2, p2 = hamiltonian_product_pauli(h1,p1,"X","right") # XHX
-
-        # XHY
-        h3,p3 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
-        h4,p4 = hamiltonian_product_pauli(h3,p3,"Y","right")  # XHY
-
-        # YHX
-        h5,p5 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left") # YH
-        h6,p6 = hamiltonian_product_pauli(h5,p5,"X","right")  # YHX
-
-        # YHY
-        h7,p7 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left") # YH
-        h8,p8 = hamiltonian_product_pauli(h7,p7,"Y","right")  # YHY
-
-        ## adding the coefficients of similar Pauli strings
-        # XHX + 1j*XHY
-        h_iter_1, p_iter_1 = add_similar_elements((h2,np.array(p2)),(h4,1j*np.array(p4)))  
-        # XHX + 1j*XHY - 1j*YHX
-        h_iter_2, p_iter_2 = add_similar_elements((h_iter_1,p_iter_1),(h6,-1j*np.array(p6)))
-        # XHX + 1j*XHY - 1j*YHX + YHY
-        h_iter_3, p_iter_3 = add_similar_elements((h_iter_2,p_iter_2),(h8,np.array(p8)))
-
-        return h_iter_3, (1/4)*np.array(p_iter_3)
-
-def H_L2_dag_L2():
-
-        ## H L2_dag L_2 = (1/2)*(HI - HZ)
-
-        # HI
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","right")
+def HZ():
         # HZ
-        h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","right")
+        hhz,phz = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","right")
 
-        h_iter_1, p_iter_1 = add_similar_elements((h1,np.array(p1)),(h2,-np.array(p2)))
+        return hhz,np.array(phz)
 
-        return h_iter_1, (1/2)*np.array(p_iter_1)
-
-def L_2_dag_L_2_H():
-
-        # L2_dag L_2 H = (1/2)*(IH - ZH)
-
-        # IH
-        h1,p1 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"I","left")
-        # ZH
-        h2,p2 = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","left")
-        
-        h_iter_1, p_iter_1 = add_similar_elements((h1,np.array(p1)),(h2,-np.array(p2)))
-
-        return h_iter_1, (1/2)*np.array(p_iter_1)
-
-# L_2_dag_H_L_2 - (1/2)*H_L2_dag_L2
-I_out_term_1_term_2 = add_similar_elements((L_2_dag_H_L_2()[0],L_2_dag_H_L_2()[1]),(H_L2_dag_L2()[0],(-1/2)*np.array(H_L2_dag_L2()[1])))
-
-# L_2_dag_H_L_2 - (1/2)*H_L2_dag_L2 - (1/2)*L_2_dag_L_2_H
-I_out_term_1_term_2_term_3 = add_similar_elements((I_out_term_1_term_2[0],I_out_term_1_term_2[1]),(L_2_dag_L_2_H()[0],(-1/2)*np.array(L_2_dag_L_2_H()[1])))        
+I_in_term_1_term_2 = add_similar_elements((L_1_dag_H_L_1()[0], (1/4)*L_1_dag_H_L_1()[1]), (H_pauli_lst,-(1/2)*H_pauli_coeff_lst))
+I_in_term_1_term_2_term_3 = add_similar_elements(I_in_term_1_term_2,(HZ()[0],-(1/4)*HZ()[1]))
+I_in_term_1_term_2_term_3_term_4 = add_similar_elements(I_in_term_1_term_2_term_3, (ZH()[0], -(1/4)*ZH()[1]))
 
 # %%
-#sparse_Pauli_to_dense_matrix(L_1_dag_H_L_1()[0],L_1_dag_H_L_1()[1]).A.conj().T - sparse_Pauli_to_dense_matrix(L_1_dag_H_L_1()[0],L_1_dag_H_L_1()[1]).A
+# Unpack the pair into two lists
+list1, list2 = I_in_term_1_term_2_term_3_term_4
+
+# Use a list comprehension to filter the elements where the corresponding element in the second list is not 0 or 0j
+I_in_current_pauli_string = ([x for x, y in zip(list1, list2) if y != 0j], [y for y in list2 if y != 0j])
+
+# %%
+#L_1 = III(X+1j*Y)/2
+def L_2_dag_H_L_2():
+
+        # XHX
+        xh, xp = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"X","left") # XH
+        xhx, xpx = hamiltonian_product_pauli(xh,xp,"X","right")  # XHX
+
+        # XHY
+        xhy, xpy = hamiltonian_product_pauli(xh,xp,"Y","right")  # XHY
+
+        # YHX
+        yh, yp = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Y","left")  # YH
+        yhx, ypx = hamiltonian_product_pauli(yh,yp,"X","right") # YHX
+
+        #YHY
+        yhy, ypy = hamiltonian_product_pauli(yh,yp,"Y","right") # YHY
+
+        # XHX+iXHY-i*YHX+YHY
+        term_1_term_2 = add_similar_elements((xhx,np.array(xpx)),(xhy,1j*np.array(xpy)))
+        term_1_term_2_term_3 = add_similar_elements((term_1_term_2[0],np.array(term_1_term_2[1])),
+                                                    (yhx,-1j*np.array(ypx)))
+        term_1_term_2_term_3_term_4 = add_similar_elements((term_1_term_2_term_3[0],np.array(term_1_term_2_term_3[1])),
+                                                    (yhy,np.array(ypy)))
+        return term_1_term_2_term_3_term_4[0], np.array(term_1_term_2_term_3_term_4[1])
+
+def ZH():
+
+        # ZH
+        hzh,pzh = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","left")
+
+        return hzh,np.array(pzh)
+
+def HZ():
+        # HZ
+        hhz,phz = hamiltonian_product_pauli(H_pauli_lst,H_pauli_coeff_lst,"Z","right")
+
+        return hhz,np.array(phz)
+
+I_out_term_1_term_2 = add_similar_elements((L_2_dag_H_L_2()[0], (1/4)*L_2_dag_H_L_2()[1]), (H_pauli_lst,-(1/2)*H_pauli_coeff_lst))
+I_out_term_1_term_2_term_3 = add_similar_elements(I_out_term_1_term_2,(HZ()[0],(1/4)*HZ()[1]))
+I_out_term_1_term_2_term_3_term_4 = add_similar_elements(I_out_term_1_term_2_term_3, (ZH()[0], (1/4)*ZH()[1]))
+
+# %%
+# Unpack the pair into two lists
+list1, list2 = I_out_term_1_term_2_term_3_term_4
+
+# Use a list comprehension to filter the elements where the corresponding element in the second list is not 0 or 0j
+I_out_current_pauli_string = ([x for x, y in zip(list1, list2) if y != 0j], [y for y in list2 if y != 0j])
 
 # %% [markdown]
 # #### Noise model for the simulator
 
+
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,64,32)
+noise_factor = np.linspace(1,64,16)
+
 T1_noise = 213.07e3/noise_factor[noise_index]
 T2_noise = 115.57e3/noise_factor[noise_index]
 
@@ -780,140 +761,58 @@ def trotter_simulation_and_return_counts(pauli_string_to_calculate_expectation_v
         return counts_thermal
 
 # %%
-r"""
+I_in_pauli_list = I_in_current_pauli_string[0]
+I_in_coefficients = I_in_current_pauli_string[1]
+if "IIII" in I_in_pauli_list:
+    index = I_in_pauli_list.index("IIII")
+    I_in_pauli_list.pop(index)
+    I_in_coefficients.pop(index)
 
-This function takes a string as input and return its components. For example,
-input: "XXYZ"
-output: "XIII" "IXII" "IIYI" "IIIZ"
+I_out_pauli_list = I_out_current_pauli_string[0]
+I_out_coefficients = I_out_current_pauli_string[1]
+if "IIII" in I_out_pauli_list:
+    index = I_out_pauli_list.index("IIII")
+    I_out_pauli_list.pop(index)
+    I_out_coefficients.pop(index)    
 
-"""
-def pauli_string_components(pauli_string):
+np.save("I_in_pauli_list.npy", I_in_pauli_list)
+np.save("I_in_coefficients.npy", I_in_coefficients)
+np.save("I_out_pauli_list.npy", I_out_pauli_list)
+np.save("I_out_coefficients.npy", I_out_coefficients)
 
-        pauli_string_decomposed = []
-
-        for i in range(len(pauli_string)):
-
-                pauli_string_element = pauli_string[i]
-                # number of pauli element on left
-                left_string_length = i
-                # number of pauli element on right
-                right_string_length = len(pauli_string) - i - 1
-                pauli_string_decomposed.append([left_string_length,pauli_string_element,right_string_length])
-
-        string_components = []
-
-        for i in pauli_string_decomposed:
-                string_components.append("I"*i[0] + i[1] + "I"*i[2])
-
-        return string_components     
-        
-r"""
-
-This function calculates the takes a binary string and bit positions (list) as input
-and return the product of {-1,1} depending on whether there is 0 (+1) or 1 (-1) in that position.
-For example, input: ["0000", "0001", "0010",.....,"1111"] and [1,3]
-            output: [1,1,-1,.....,1]
-
-"""
-def calculate_products(binary_list, bit_positions):
-    products = []
-    for binary_str in binary_list:
-        product = 1
-        for pos in bit_positions:
-            bit = int(binary_str[-(pos+1)])  # Counting the rightmost bit as 0th bit
-            product *= 1 if bit == 0 else -1
-        products.append(product)
-    return np.array(products)
-
+number_of_shots = 8192
 
 r"""
 
-This function returns the expectation value of a pauli string.
-input: "XXYX" (for example) output: expectation value of "XXYX"
+This function calculates the expectation value of the current in and current out operator.
 
 """
-def expectation_value_of_a_pauli_string(pauli_string,
-                                        observable_counts_dict_sorted):
-        # decomposing the pauli strings
-        pauli_string_decomposed_lst = pauli_string_components(pauli_string)
+def current_expectation_value(current_operator_pauli_strings, time):
 
-        products_array = np.ones((L,2**L)) # list to hold the products of bits as -1 or 1
-        probability_array = np.ones((L,2**L)) 
+        current_expectation_value_lst = []
 
-        number_of_shots = 8192
-        
-        # iterating over each element in the decomposition of the pauli string
-        for i in range(len(pauli_string_decomposed_lst)):
+        for i in range(len(current_operator_pauli_strings)):
+                
+                pauli_string_to_calculate_expectation_value = current_operator_pauli_strings[i]
 
-                decomposed_string = pauli_string_decomposed_lst[i]
+                bit_strings_and_counts = trotter_simulation_and_return_counts(pauli_string_to_calculate_expectation_value,
+                                                0.1,"0100",time,number_of_shots)
 
-                if decomposed_string == "IIII":
-                        pass
-                else:
-                        # string other than "IIII"
-                        bit_strings_and_counts = list(observable_counts_dict_sorted[decomposed_string].items()) # result from simulation
-                        for j in range(2**L): # iterating over all binary strings with L bits
-                                binary_string = bit_strings_and_counts[j][0]
-                                bit = binary_string[i] # i th position in the binary string is not "I"
-                                if bit == "0":
-                                        products_array[i,j] *= 1
-                                elif bit == "1":
-                                        products_array[i,j] *= -1
-                                probability_array[i,j] = bit_strings_and_counts[j][1]/number_of_shots
+                pauli_string_expectation_value = 0
 
-        return np.sum(np.prod(products_array*probability_array, axis = 0))    
+                for key, value in bit_strings_and_counts.items():
+
+                        pauli_string_expectation_value += ((-1)**sum(int(num) for num in key))* (value/number_of_shots)
+
+                current_expectation_value_lst.append(pauli_string_expectation_value)                                
+
+        return current_expectation_value_lst
 
 # %%
-r"""
-
-This function returns the expectation value of all the strings
-["IIIX","IIXI","IXII","XIII","IIIY","IIYI","IYII","YIII","IIIZ","IIZI","IZII","ZIII"].
-
-"""
-def single_pauli_expectation_value(time):
-
-        r"""
-        
-        The expectation value of the following list of pauli strings will be calculated.
-        
-        """
-        single_pauli_strings_lst = ["IIIX","IIXI","IXII","XIII",
-                                     "IIIY","IIYI","IYII","YIII",
-                                     "IIIZ","IIZI","IZII","ZIII"]
-
-        number_of_shots = 8192
-        time_step_for_trotterization = 0.1
-        initial_state_of_system = "0100"
-
-        observable_counts_dict = {}
-
-        for i in range(len(single_pauli_strings_lst)):
-
-                pauli_string = single_pauli_strings_lst[i]
-
-                # simulating the pauli strings
-                sim_counts = trotter_simulation_and_return_counts(pauli_string,
-                                                time_step_for_trotterization,
-                                                initial_state_of_system,
-                                                time,
-                                                number_of_shots,
-                                                )
-
-                observable_counts_dict[pauli_string] = sim_counts
-
-        observable_counts_dict_sorted = {}
-
-        for pauli_strings in observable_counts_dict:
-                
-                d = observable_counts_dict[pauli_strings]
-                # sorts the dictionary of counts such that it starts with "0000" and ends with "1111"
-                sorted_d = {k: d[k] for k in sorted(d, key=lambda x: int(x, 2))}
-                observable_counts_dict_sorted[pauli_strings] = sorted_d
-
-        return observable_counts_dict_sorted
-
-time_lst = np.linspace(0.1,30,20)
+time_lst = np.linspace(0.1,30,10)
 
 for time in time_lst:        
-        t = single_pauli_expectation_value(time)
+        t = current_expectation_value(I_in_pauli_list, time)
         np.save("t_"+str(np.around(time,2))+".npy",t)
+
+
