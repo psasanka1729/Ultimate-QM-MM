@@ -780,7 +780,7 @@ np.save("I_in_coefficients.npy", I_in_coefficients)
 np.save("I_out_pauli_list.npy", I_out_pauli_list)
 np.save("I_out_coefficients.npy", I_out_coefficients)
 
-number_of_shots = 8192
+number_of_shots = 1000
 
 r"""
 
@@ -809,7 +809,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.1,30,10)
+time_lst = np.linspace(0.1,50,10)
 
 for time in time_lst:        
         t = current_expectation_value(I_in_pauli_list, time)
