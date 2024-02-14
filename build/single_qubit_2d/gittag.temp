@@ -1,3 +1,39 @@
+commit 97e96d169b1a73b008c47ebb2d5df7067d74a21a
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Wed Feb 14 09:09:35 2024 -0600
+
+    Commit before run single_qubit_2d
+
+commit 36ea509f529a6ec16b737ffc940492344ba5a526
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Tue Feb 13 22:20:59 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 822e6926ed9292a5222f5bd7a25167952222e720
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Tue Feb 13 22:20:05 2024 -0600
+
+    expectation value of current
+
+commit e8c9eb5673d4e6278ee8423a070802a55959c715
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Tue Feb 13 22:17:17 2024 -0600
+
+    cluster backup
+
+commit efa70355475ce24994f6fe118037e4c34422863c
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Mon Feb 12 23:39:36 2024 -0600
+
+    Commit before run single_qubit_shadow
+
+commit 644782839b9ca544d91ea584e4f1b42851525741
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Mon Feb 12 21:31:25 2024 -0600
+
+    Commit before run single_qubit_shadow
+
 commit d2e5ed79299300f3c6a7c36441aa1cdfd6c08cce
 Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
 Date:   Mon Feb 12 12:36:48 2024 -0600

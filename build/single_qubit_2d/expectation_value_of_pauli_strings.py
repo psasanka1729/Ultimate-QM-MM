@@ -39,8 +39,8 @@ def controlled_ry_gate_matrix(angle_theta):
 def controlled_not_gate_matrix():
         return kron(I2,PI_0) + kron(sigma_x,PI_1)
 
-gamma_in = 2.6
-gamma_out = 2.6
+gamma_in = 1.6
+gamma_out = 1.6
 
 # %% [markdown]
 # #### Hamiltonian of $H_{2}$ with Jordan Wigner transformation
