@@ -765,24 +765,24 @@ def trotter_simulation_and_return_counts(pauli_string_to_calculate_expectation_v
 # %%
 I_in_pauli_list = I_in_current_pauli_string[0]
 I_in_coefficients = I_in_current_pauli_string[1]
-if "IIII" in I_in_pauli_list:
+"""if "IIII" in I_in_pauli_list:
     index = I_in_pauli_list.index("IIII")
     I_in_pauli_list.pop(index)
-    I_in_coefficients.pop(index)
+    I_in_coefficients.pop(index)"""
 
 I_out_pauli_list = I_out_current_pauli_string[0]
 I_out_coefficients = I_out_current_pauli_string[1]
-if "IIII" in I_out_pauli_list:
+"""if "IIII" in I_out_pauli_list:
     index = I_out_pauli_list.index("IIII")
     I_out_pauli_list.pop(index)
-    I_out_coefficients.pop(index)    
+    I_out_coefficients.pop(index)"""    
 
 np.save("I_in_pauli_list.npy", I_in_pauli_list)
 np.save("I_in_coefficients.npy", I_in_coefficients)
 np.save("I_out_pauli_list.npy", I_out_pauli_list)
 np.save("I_out_coefficients.npy", I_out_coefficients)
 
-number_of_shots = 1000
+number_of_shots = 8192
 
 r"""
 
