@@ -625,7 +625,7 @@ I_out_current_pauli_string = ([x for x, y in zip(list1, list2) if y != 0j], [y f
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,100,16)
+noise_factor = np.linspace(1,1000,16)
 
 np.save("noise_factor_lst.npy", noise_factor)
 
@@ -811,7 +811,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.1,50,10)
+time_lst = np.linspace(0.1,30,10)
 
 np.save("time_t_lst.npy", time_lst)
 
