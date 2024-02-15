@@ -625,7 +625,7 @@ I_out_current_pauli_string = ([x for x, y in zip(list1, list2) if y != 0j], [y f
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,64,32)
+noise_factor = np.linspace(1,200,16)
 
 T1_noise = 213.07e3/noise_factor[noise_index]
 T2_noise = 115.57e3/noise_factor[noise_index]
@@ -763,17 +763,17 @@ def trotter_simulation_and_return_counts(pauli_string_to_calculate_expectation_v
 # %%
 I_in_pauli_list = I_in_current_pauli_string[0]
 I_in_coefficients = I_in_current_pauli_string[1]
-if "IIII" in I_in_pauli_list:
+"""if "IIII" in I_in_pauli_list:
     index = I_in_pauli_list.index("IIII")
     I_in_pauli_list.pop(index)
-    I_in_coefficients.pop(index)
+    I_in_coefficients.pop(index)"""
 
 I_out_pauli_list = I_out_current_pauli_string[0]
 I_out_coefficients = I_out_current_pauli_string[1]
-if "IIII" in I_out_pauli_list:
+"""if "IIII" in I_out_pauli_list:
     index = I_out_pauli_list.index("IIII")
     I_out_pauli_list.pop(index)
-    I_out_coefficients.pop(index)    
+    I_out_coefficients.pop(index)"""    
 
 np.save("I_in_pauli_list.npy", I_in_pauli_list)
 np.save("I_in_coefficients.npy", I_in_coefficients)
@@ -809,7 +809,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.1,100,10)
+time_lst = np.linspace(0.1,40,10)
 
 for time in time_lst:        
         t = current_expectation_value(I_in_pauli_list, time)
