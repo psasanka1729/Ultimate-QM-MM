@@ -3,7 +3,7 @@
 #SBATCH --job-name=single_qubit_2d
 #
 # Partition:
-#SBATCH --partition=cmt
+#SBATCH --partition=gpu-preempt
 #
 # Processors:
 #SBATCH --ntasks=16
