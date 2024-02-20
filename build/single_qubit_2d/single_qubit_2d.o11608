@@ -33,3 +33,4 @@ Launcher: Task 11 running job 12 on compute-2-02-04 (bash single_qubit_2d_11.qsu
 Launcher: Task 14 running job 15 on compute-2-02-04 (bash single_qubit_2d_14.qsub)
 Launcher: Task 3 running job 4 on compute-2-02-04 (bash single_qubit_2d_3.qsub)
 Launcher: Task 7 running job 8 on compute-2-02-04 (bash single_qubit_2d_7.qsub)
+slurmstepd: error: *** JOB 11608 ON compute-2-02-04 CANCELLED AT 2024-02-20T11:59:31 ***
