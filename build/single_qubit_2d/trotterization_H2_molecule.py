@@ -445,7 +445,7 @@ def counts_to_statevector(counts):
     return sum(statevector)
 
 time_step_for_trotterization = 0.1
-time_lst = np.linspace(time_step_for_trotterization,200,5)
+time_lst = np.linspace(time_step_for_trotterization,500,5)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
