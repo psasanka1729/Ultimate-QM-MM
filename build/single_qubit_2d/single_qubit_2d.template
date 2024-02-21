@@ -9,7 +9,7 @@ LOCAL_DIR=$HOME/$PROJECT_NAME/build
 
 mkdir -p $SCRATCH_DIR
 
-EXEC=trotterization_H2_molecule.py #expectation_value_of_pauli_strings.py #single_qubit_lindblad_equation.py
+EXEC=expectation_value_of_pauli_strings.py #single_qubit_lindblad_equation.py
 HELPER="hydrogen_jw_hamiltonian.txt"
 
 cd $LOCAL_DIR/$RUN_NAME
