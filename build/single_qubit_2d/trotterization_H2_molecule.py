@@ -355,7 +355,7 @@ def trotter_circuit(time_step,final_time,initial_state):
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,64,32)
+noise_factor = np.linspace(1,64,16)
 #T1_noise = T1_noise_lst[noise_index]
 #T2_noise = T2_noise_lst[noise_index]
 
@@ -445,7 +445,7 @@ def counts_to_statevector(counts):
     return sum(statevector)
 
 time_step_for_trotterization = 0.1
-time_lst = np.linspace(time_step_for_trotterization,400,20)
+time_lst = np.linspace(time_step_for_trotterization,200,5)
 counts_lst = []
 density_matrices_lst = []
 initial_state_of_system = "0100"
@@ -454,8 +454,8 @@ for time in time_lst:
         # Execute and get counts
         h_2_molecule_circuit = trotter_circuit(time_step_for_trotterization,time,initial_state_of_system)
         # Run the noisy simulation
-        sim_thermal = AerSimulator(noise_model=noise_thermal)
-        #sim_thermal = Aer.get_backend("aer_simulator")
+        #sim_thermal = AerSimulator(noise_model=noise_thermal)
+        sim_thermal = Aer.get_backend("aer_simulator")
         circ_tthermal = transpile(h_2_molecule_circuit, sim_thermal, basis_gates = ["ecr","id","rz","sx","reset","x"], optimization_level = 2)
         result_thermal = sim_thermal.run(circ_tthermal).result()
         counts_thermal = result_thermal.get_counts()
