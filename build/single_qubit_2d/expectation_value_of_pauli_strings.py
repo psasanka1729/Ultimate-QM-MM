@@ -38,8 +38,8 @@ def controlled_ry_gate_matrix(angle_theta):
 def controlled_not_gate_matrix():
         return kron(I2,PI_0) + kron(sigma_x,PI_1)
 
-gamma_in = 2.6
-gamma_out = 2.6
+gamma_in = 1.6
+gamma_out = 1.6
 
 # %% [markdown]
 # #### Hamiltonian of $H_{2}$ with Jordan Wigner transformation
@@ -843,7 +843,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.0,20,20)
+time_lst = np.linspace(0.0,10,10)
 
 for time in time_lst: 
         t = current_expectation_value(I_in_pauli_list, time)
