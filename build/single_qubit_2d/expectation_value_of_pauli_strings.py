@@ -644,7 +644,7 @@ filtered_I_out_term_1_term_2_term_3 = ([x for x, y in zip(list1, list2) if y != 
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,200,16)
+noise_factor = np.linspace(1,300,16)
 
 T1_noise = 213.07e3/noise_factor[noise_index]
 T2_noise = 115.57e3/noise_factor[noise_index]
