@@ -230,7 +230,7 @@ def one_time_step_circuit(dt,barrier_status):
 
     # YYYY 8
     for i in range(L):
-        qc_h2.sdg(qr[i])    
+        qc_h2.s(qr[i])    
     for i in range(L):
         qc_h2.h(qr[i])  
 
@@ -253,9 +253,9 @@ def one_time_step_circuit(dt,barrier_status):
         pass   
 
     # XXYY 9
-    qc_h2.sdg(qr[0])
+    qc_h2.s(qr[0])
     qc_h2.h(qr[0])
-    qc_h2.sdg(qr[1])
+    qc_h2.s(qr[1])
     qc_h2.h(qr[1])   
     qc_h2.h(qr[2])
     qc_h2.h(qr[3])
@@ -281,9 +281,9 @@ def one_time_step_circuit(dt,barrier_status):
         pass
 
     # YYXX 10
-    qc_h2.sdg(qr[2])
+    qc_h2.s(qr[2])
     qc_h2.h(qr[2])
-    qc_h2.sdg(qr[3])
+    qc_h2.s(qr[3])
     qc_h2.h(qr[3])   
     qc_h2.h(qr[0])
     qc_h2.h(qr[1])    
@@ -843,7 +843,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.0,10,20)
+time_lst = np.linspace(0.0,5,10)
 
 for time in time_lst: 
         t = current_expectation_value(I_in_pauli_list, time)
