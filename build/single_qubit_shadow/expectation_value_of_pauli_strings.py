@@ -843,7 +843,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.0,5,20)
+time_lst = np.linspace(0.0,5,10)
 
 for time in time_lst: 
         t = current_expectation_value(I_in_pauli_list, time)
