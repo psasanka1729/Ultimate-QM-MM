@@ -38,8 +38,8 @@ def controlled_ry_gate_matrix(angle_theta):
 def controlled_not_gate_matrix():
         return kron(I2,PI_0) + kron(sigma_x,PI_1)
 
-gamma_in = 1.6
-gamma_out = 1.6
+gamma_in = 2.6
+gamma_out = 2.6
 
 # %% [markdown]
 # #### Hamiltonian of $H_{2}$ with Jordan Wigner transformation
@@ -644,7 +644,7 @@ filtered_I_out_term_1_term_2_term_3 = ([x for x, y in zip(list1, list2) if y != 
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,300,32)
+noise_factor = np.linspace(1,480,48)
 
 T1_noise = 213.07e3/noise_factor[noise_index]
 T2_noise = 115.57e3/noise_factor[noise_index]
@@ -843,7 +843,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.0,5,10)
+time_lst = np.linspace(0.0,5,20)
 
 for time in time_lst: 
         t = current_expectation_value(I_in_pauli_list, time)
