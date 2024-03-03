@@ -644,7 +644,7 @@ filtered_I_out_term_1_term_2_term_3 = ([x for x, y in zip(list1, list2) if y != 
 
 noise_index = int(sys.argv[1])
 
-noise_factor = np.linspace(1,480,48)
+noise_factor = np.linspace(1,320,64)
 
 T1_noise = 213.07e3/noise_factor[noise_index]
 T2_noise = 115.57e3/noise_factor[noise_index]
@@ -843,7 +843,7 @@ def current_expectation_value(current_operator_pauli_strings, time):
         return current_expectation_value_lst
 
 # %%
-time_lst = np.linspace(0.0,5,10)
+time_lst = np.linspace(0.0,3,20)
 
 for time in time_lst: 
         t = current_expectation_value(I_in_pauli_list, time)

@@ -6,7 +6,7 @@ import os
 
 partition_info=['cmt',16] # = [partition,ncores]
 # partition_info=['debug',16] # = [partition,ncores]
-time_str='3-00:00:00'
+time_str='7-00:00:00'
 project_name=os.getcwd().split('/')[-3]
 myemail=os.environ["MYEMAIL"]
 
@@ -41,7 +41,7 @@ template_contents=open(template_file,'r').read()
 
 vnum=0
 
-for L in range(48):
+for L in range(64):
     qsub_file=template_file.replace('.template','_'+str(vnum)+'.qsub')
     fout=open(qsub_file,'w')
 
