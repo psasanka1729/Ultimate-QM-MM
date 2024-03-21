@@ -1,3 +1,27 @@
+commit 02f94694c2aee72893bad43ae3faa6d3ef32fccd
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Thu Mar 21 12:01:07 2024 -0500
+
+    Commit before run single_qubit_shadow
+
+commit 2183a11d43db0f1549efc388e13d7ac6f48c8da4
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Mar 21 11:57:56 2024 -0500
+
+    Add files via upload
+
+commit 5dd77000b6261c5bfa662cb335125fbd37485c54
+Author: Sasanka <31107620+psasanka1729@users.noreply.github.com>
+Date:   Thu Mar 21 11:55:02 2024 -0500
+
+    trotterization of acetylene Hamiltonian
+
+commit 8b6ab684a324440a2297a574e9dc5689262514f7
+Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
+Date:   Thu Mar 21 11:54:13 2024 -0500
+
+    cluster backup
+
 commit 49ff9f10f65b2902abecb4053fc67aa4355fcfe9
 Author: Sasanka Dowarah <sxd190113@login-01.localdomain>
 Date:   Sun Mar 3 15:26:00 2024 -0600
