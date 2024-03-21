@@ -6,11 +6,11 @@
 #SBATCH --partition=cmt
 #
 # Processors:
-#SBATCH --ntasks=48
-#SBATCH --nodes=3
+#SBATCH --ntasks=64
+#SBATCH --nodes=4
 #
 # Wall clock limit:
-#SBATCH --time=3-00:00:00
+#SBATCH --time=7-00:00:00
 #
 # Email at end:
 #SBATCH --mail-user=sxd190113@utdallas.edu
